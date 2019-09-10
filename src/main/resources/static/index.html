@@ -1,0 +1,134 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>Prueba de Comunicación por WebSockets</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+
+<body onload="disconnect()">
+	<div class="jumbotron text-center">
+		<div class="h1">Prueba de Recepción de Mensajes</div>
+		<div class="h2">Prueba de Comunicación por WebSockets</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="h2">Suscribirse a mensajes</div>
+					<div class="form-group col-sm-12">
+						<label for="canal">Escriba un canal:</label> <input type="text"
+							class="form-control" id="canal">
+					</div>
+					<div class="pull-right">
+						<button class="btn btn-success" id="connect" onclick="connect();">Conectar</button>
+						<button class="btn btn-danger" id="disconnect" disabled="disabled"
+							onclick="disconnect();">Desconectar</button>
+					</div>
+				</div>
+				<div class="row">
+
+					<div class="h2">Enviar un mensaje</div>
+					<div class="form-group col-md-6">
+						<label for="canalSend">Escriba un canal:</label> <input
+							type="text" class="form-control" id="canalSend">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="messageSend">Mensaje:</label> <input type="text"
+							class="form-control" id="messageSend"></input>
+					</div>
+					<div class="pull-right">
+						<button class="btn btn-success" id="connect" onclick="send();">Enviar</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="h2">Mensajes Recibidos</div>
+				<ul id="messages" class="list-group"></ul>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	var stompClient = null;
+
+	function setConnected(connected) {
+		document.getElementById('connect').disabled = connected;
+		document.getElementById('disconnect').disabled = !connected;
+		document.getElementById('canal').disabled = connected;
+	}
+
+	function connect() {
+		//Url del socket
+		var socket = new SockJS('/socket');
+
+		stompClient = Stomp.over(socket);
+		stompClient.heartbeat.outgoing = 30000; // client will send heartbeats every 20000ms
+		stompClient.heartbeat.incoming = 120000;
+
+		stompClient.connect({}, connectCallback, errorCallback);
+	}
+
+	function connectCallback(frame) {
+		setConnected(true);
+		console.log('connectCallback: ' + frame);
+
+		// Subscribe to notification topic
+		stompClient.subscribe('/topic/'
+				+ document.getElementById('canal').value,
+				function(notifications) {
+					$('#messages').prepend(
+							'<li class="list-group-item"> '
+									+ JSON.parse(notifications.body).message
+									+ '</li>');
+				})
+	}
+
+	function errorCallback(e) {
+		console.log('errorCallback: ' + e);
+		setConnected(false);
+	}
+
+	function disconnect() {
+		if (stompClient != null)
+			stompClient.disconnect();
+
+		setConnected(false);
+
+		console.log("Disconnected");
+	}
+
+	function send() {
+		//Url del punto de notificación
+		var url = "/notify/"
+				+ document.getElementById('canalSend').value + "/"
+				+ document.getElementById('messageSend').value;
+		
+		$.ajax({
+			type : 'GET',
+			url : url,
+			crossDomain : true,
+			success : function(responseData, textStatus, jqXHR) {
+				console.log("Send Data: " + responseData + "\nStatus: "
+						+ textStatus);
+				document.getElementById('messageSend').value = "";
+			},
+			error : function(responseData, textStatus, errorThrown) {
+				console.log('Send Error: ' + responseData + "\nStatus: "
+						+ textStatus);
+			}
+		});
+		
+	};
+</script>
+</html>
