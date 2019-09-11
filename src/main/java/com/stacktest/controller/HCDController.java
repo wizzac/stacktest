@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class HCDApiController {	
-	@GetMapping("/hcdapi/display")
+public class HCDController {	
+	@GetMapping("/hcd/display")
     public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
         model.addAttribute("name", name);
-        return "hcd_api/display";
+        return "hcd/display";
     }
 }

@@ -1,134 +1,99 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Prueba de Comunicación por WebSockets</title>
+<title>Prueba de Pantalla de Servicios</title>
+
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.9/css/mdb.css">
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.9/js/mdb.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+<style>
+/* Required for full background image */
+html, body, header, .view {
+	height: 100%;
+}
+
+.rgba-gradient {
+	background: -webkit-linear-gradient(45deg, rgba(0, 0, 0, 0.7),
+		rgba(72, 15, 144, 0.4) 100%);
+	background: -webkit-gradient(linear, 45deg, from(rgba(0, 0, 0, 0.7),
+		rgba(72, 15, 144, 0.4) 100%));
+	background: linear-gradient(to 45deg, rgba(0, 0, 0, 0.7),
+		rgba(72, 15, 144, 0.4) 100%);
+}
+
+.background-view {
+	background-image:
+		url('https://miro.medium.com/max/2910/1*W6uNaXtP7VP-6vZNXPWCmA.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+}
+
+.llamadoPaciente {
+	position: relative;
+}
+
+.llamadoPaciente .text-wrapper {
+	position: relative;
+	display: inline-block;
+	padding-top: 0.2em;
+	padding-right: 0.05em;
+	padding-bottom: 0.1em;
+	overflow: hidden;
+}
+
+.llamadoPaciente .letter {
+	transform-origin: 50% 100%;
+	display: inline-block;
+	line-height: 1em;
+}
+</style>
 </head>
 
-<body onload="disconnect()">
-	<div class="jumbotron text-center">
-		<div class="h1">Prueba de Recepción de Mensajes</div>
-		<div class="h2">Prueba de Comunicación por WebSockets</div>
-	</div>
-
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-6">
-				<div class="row">
-					<div class="h2">Suscribirse a mensajes</div>
-					<div class="form-group col-sm-12">
-						<label for="canal">Escriba un canal:</label> <input type="text"
-							class="form-control" id="canal">
-					</div>
-					<div class="pull-right">
-						<button class="btn btn-success" id="connect" onclick="connect();">Conectar</button>
-						<button class="btn btn-danger" id="disconnect" disabled="disabled"
-							onclick="disconnect();">Desconectar</button>
+<body>
+	<div class="view white-text background-view">
+		<div
+			class="mask rgba-gradient justify-content-center align-items-center">
+			<div class="container">
+				<div class="row mt-1">
+					<div class="h1-responsive font-weight-bold wow fadeInLeft"
+						data-wow-delay="0.3s">
+						<h1 class="display-3">Stack Test</h1>
 					</div>
 				</div>
 				<div class="row">
-
-					<div class="h2">Enviar un mensaje</div>
-					<div class="form-group col-md-6">
-						<label for="canalSend">Escriba un canal:</label> <input
-							type="text" class="form-control" id="canalSend">
-					</div>
-					<div class="form-group col-md-6">
-						<label for="messageSend">Mensaje:</label> <input type="text"
-							class="form-control" id="messageSend"></input>
-					</div>
-					<div class="pull-right">
-						<button class="btn btn-success" id="connect" onclick="send();">Enviar</button>
+					<div class="col-md-4">
+						<div class="card wow fadeInRight" data-wow-delay="0.3s">
+							<div class="card-header bg-primary">HCD</div>
+						    <div class="card-body list-group p-0">
+							  <a href="/hcd/display" class="list-group-item">Test Services Display</a>
+							</div>
+						  </div>
 					</div>
 				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="h2">Mensajes Recibidos</div>
-				<ul id="messages" class="list-group"></ul>
 			</div>
 		</div>
 	</div>
 </body>
 
 <script type="text/javascript">
-	var stompClient = null;
-
-	function setConnected(connected) {
-		document.getElementById('connect').disabled = connected;
-		document.getElementById('disconnect').disabled = !connected;
-		document.getElementById('canal').disabled = connected;
-	}
-
-	function connect() {
-		//Url del socket
-		var socket = new SockJS('/socket');
-
-		stompClient = Stomp.over(socket);
-		stompClient.heartbeat.outgoing = 30000; // client will send heartbeats every 20000ms
-		stompClient.heartbeat.incoming = 120000;
-
-		stompClient.connect({}, connectCallback, errorCallback);
-	}
-
-	function connectCallback(frame) {
-		setConnected(true);
-		console.log('connectCallback: ' + frame);
-
-		// Subscribe to notification topic
-		stompClient.subscribe('/topic/'
-				+ document.getElementById('canal').value,
-				function(notifications) {
-					$('#messages').prepend(
-							'<li class="list-group-item"> '
-									+ JSON.parse(notifications.body).message
-									+ '</li>');
-				})
-	}
-
-	function errorCallback(e) {
-		console.log('errorCallback: ' + e);
-		setConnected(false);
-	}
-
-	function disconnect() {
-		if (stompClient != null)
-			stompClient.disconnect();
-
-		setConnected(false);
-
-		console.log("Disconnected");
-	}
-
-	function send() {
-		//Url del punto de notificación
-		var url = "/notify/"
-				+ document.getElementById('canalSend').value + "/"
-				+ document.getElementById('messageSend').value;
-		
-		$.ajax({
-			type : 'GET',
-			url : url,
-			crossDomain : true,
-			success : function(responseData, textStatus, jqXHR) {
-				console.log("Send Data: " + responseData + "\nStatus: "
-						+ textStatus);
-				document.getElementById('messageSend').value = "";
-			},
-			error : function(responseData, textStatus, errorThrown) {
-				console.log('Send Error: ' + responseData + "\nStatus: "
-						+ textStatus);
-			}
-		});
-		
-	};
+	new WOW().init();
 </script>
 </html>
