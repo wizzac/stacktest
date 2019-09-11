@@ -1,0 +1,416 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>Prueba de Pantalla de Servicios</title>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.9/css/mdb.css">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.9/js/mdb.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+<style>
+/* Required for full background image */
+html, body, header, .view {
+	height: 100%;
+}
+
+.rgba-gradient {
+	background: -webkit-linear-gradient(45deg, rgba(0, 0, 0, 0.7),
+		rgba(72, 15, 144, 0.4) 100%);
+	background: -webkit-gradient(linear, 45deg, from(rgba(0, 0, 0, 0.7),
+		rgba(72, 15, 144, 0.4) 100%));
+	background: linear-gradient(to 45deg, rgba(0, 0, 0, 0.7),
+		rgba(72, 15, 144, 0.4) 100%);
+}
+
+.background-view {
+	background-image:
+		url('https://www.pandasecurity.com/spain/mediacenter/src/uploads/2019/07/hospital.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+}
+
+.llamadoPaciente {
+	position: relative;
+}
+
+.llamadoPaciente .text-wrapper {
+	position: relative;
+	display: inline-block;
+	padding-top: 0.2em;
+	padding-right: 0.05em;
+	padding-bottom: 0.1em;
+	overflow: hidden;
+}
+
+.llamadoPaciente .letter {
+	transform-origin: 50% 100%;
+	display: inline-block;
+	line-height: 1em;
+}
+</style>
+</head>
+
+<body>
+	<div class="view white-text background-view">
+		<div
+			class="mask rgba-gradient justify-content-center align-items-center">
+			<div class="container">
+				<div class="row mt-1">
+					<div class="h1-responsive font-weight-bold wow fadeInLeft"
+						data-wow-delay="0.3s">
+						<h1 id="nombreDisplay" class="display-3"></h1>
+						<h4 id="detallesDisplay"></h4>
+					</div>
+				</div>
+				<div class="row">
+					<div id="divEspecialidades" class="col-md-12"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	//check if an element exists in array using a comparer function
+	//comparer : function(currentElement)
+	Array.prototype.inArray = function(comparer) {
+		for (var i = 0; i < this.length; i++) {
+			if (comparer(this[i]))
+				return true;
+		}
+		return false;
+	};
+
+	//adds an element to the array if it does not already exist using a comparer 
+	//function
+	Array.prototype.pushIfNotExist = function(element, comparer) {
+		if (!this.inArray(comparer)) {
+			this.push(element);
+		}
+	};
+
+	var crearMocksDTO = function() {
+		// Creo un dto de ejemplo
+		var dto = {};
+		dto.id = 1000;
+		dto.name = "Pantalla de Prueba";
+		dto.details = "Esta es una simple pantalla de prueba para la Gestión de Espera";
+		dto.server_datetime = new Date();
+		dto.services = [];
+
+		// Creo servicios de ejemplo
+		var servDto1 = {};
+		servDto1.id = 2000;
+		servDto1.name = "Servicio de Pediatría - Dr. Pérez";
+		servDto1.location = "Pasillo 12 Consult. A";
+		servDto1.specialities = [];
+		servDto1.professionals = [];
+		servDto1.schedules = [];
+		dto.services.push(servDto1);
+
+		var servDto2 = {};
+		servDto2.id = 2001;
+		servDto2.name = "Servicio de Odontología - Dra. Menéndez";
+		servDto2.location = "Pasillo 10 Consult. C";
+		servDto2.specialities = [];
+		servDto2.professionals = [];
+		servDto2.schedules = [];
+		dto.services.push(servDto2);
+
+		var servDto3 = {};
+		servDto3.id = 2002;
+		servDto3.name = "Servicio de Pediatría - Dr. Pipón";
+		servDto3.location = "Pasillo 3 Consult. A";
+		servDto3.specialities = [];
+		servDto3.professionals = [];
+		servDto3.schedules = [];
+		dto.services.push(servDto3);
+
+		var servDto4 = {};
+		servDto4.id = 2002;
+		servDto4.name = "Servicio de Cardiología - Dr. Mansilla";
+		servDto4.location = "Pasillo 7 Consult. A";
+		servDto4.specialities = [];
+		servDto4.professionals = [];
+		servDto4.schedules = [];
+		dto.services.push(servDto4);
+
+		var servDto5 = {};
+		servDto5.id = 2002;
+		servDto5.name = "Servicio de Cardiología - Dr. Torpe";
+		servDto5.location = "Pasillo 7 Consult. B";
+		servDto5.specialities = [];
+		servDto5.professionals = [];
+		servDto5.schedules = [];
+		dto.services.push(servDto5);
+
+		var servDto6 = {};
+		servDto6.id = 2002;
+		servDto6.name = "Servicio de Cardiología - Dr. Lozario";
+		servDto6.location = "Pasillo 7 Consult. C";
+		servDto6.specialities = [];
+		servDto6.professionals = [];
+		servDto6.schedules = [];
+		dto.services.push(servDto6);
+
+		// Creo especialidades de ejemplo 
+		var espDto1 = {};
+		espDto1.id = 3000;
+		espDto1.name = "Pediatría";
+		espDto1.code = "PED01";
+		servDto1.specialities.push(espDto1);
+
+		var espDto2 = {};
+		espDto2.id = 3001;
+		espDto2.name = "Odontología";
+		espDto2.code = "ODO01";
+		servDto2.specialities.push(espDto2);
+
+		var espDto3 = {};
+		espDto3.id = 3000;
+		espDto3.name = "Pediatría";
+		espDto3.code = "PED01";
+		servDto3.specialities.push(espDto3);
+
+		var espDto4 = {};
+		espDto4.id = 3002;
+		espDto4.name = "Cardiología";
+		espDto4.code = "CAR01";
+		servDto4.specialities.push(espDto4);
+		servDto5.specialities.push(espDto4);
+		servDto6.specialities.push(espDto4);
+
+		// Creo los profesionales
+		var profDto1 = {};
+		profDto1.id = 4000;
+		profDto1.first_name = "José Andrés";
+		profDto1.last_name = "Pérez";
+		servDto1.professionals.push(profDto1);
+
+		var profDto2 = {};
+		profDto2.id = 4001;
+		profDto2.first_name = "María Antonela";
+		profDto2.last_name = "Menéndez";
+		servDto2.professionals.push(profDto2);
+
+		var profDto3 = {};
+		profDto3.id = 4002;
+		profDto3.first_name = "José Pipo";
+		profDto3.last_name = "Pipón";
+		servDto3.professionals.push(profDto3);
+
+		var profDto4 = {};
+		profDto4.id = 4003;
+		profDto4.first_name = "César Augusto";
+		profDto4.last_name = "Mansilla";
+		servDto4.professionals.push(profDto4);
+
+		var profDto5 = {};
+		profDto5.id = 4004;
+		profDto5.first_name = "Diego Armando";
+		profDto5.last_name = "Torpe";
+		servDto5.professionals.push(profDto5);
+
+		var profDto6 = {};
+		profDto6.id = 4005;
+		profDto6.first_name = "Casimiro Saúl";
+		profDto6.last_name = "Lozario";
+		servDto6.professionals.push(profDto6);
+
+		// Creo los schedules
+		var nombres = [ "Juan", "Jorge", "Casimiro", "Laura", "Estefano",
+				"Uriel", "María", "Saura", "Miriam", "Ignacio", "Emanuel",
+				"Paulina", "Lautaro", "Ana", "Silvana", "Damián", "Josefina" ]
+		var apellidos = [ "Rodriguez", "López", "Matinez", "Jorio", "Aguero",
+				"Paelvecino", "Manija", "Dominguez", "Rosales", "Alcaraz",
+				"Ortega", "De la Cornisa", "Quiroga" ]
+		var cantTurnosProfesional = 10;
+
+		dto.services.forEach(function(servDto) {
+			for (var i = 0; i < cantTurnosProfesional; i++) {
+				var schDto = {};
+				schDto.id = 5000
+						+ ((servDto.id - 2000) * cantTurnosProfesional) + i;
+
+				var min = 0;
+				var max = nombres.length;
+				var pos = parseInt(Math.random() * (+max - +min) + +min, 10);
+				schDto.patient_first_name = nombres[pos];
+
+				max = apellidos.length;
+				pos = parseInt(Math.random() * (+max - +min) + +min, 10);
+				schDto.patient_last_name = apellidos[pos];
+
+				max = servDto.professionals.length;
+				pos = parseInt(Math.random() * (+max - +min) + +min, 10);
+				schDto.professional_id = servDto.professionals[pos].id;
+				schDto.service_id = servDto.id;
+				schDto.date_status = new Date();
+				schDto.status = i == 0 ? "CALLED" : "ACT";
+
+				servDto.schedules.push(schDto);
+			}
+		});
+
+		return dto;
+	};
+
+	var dto = crearMocksDTO();
+
+	var iniciarPantalla = function() {
+		$('#nombreDisplay').html(dto.name);
+		$('#detallesDisplay').html(dto.details);
+		var divEspecialidades = $('#divEspecialidades');
+
+		var especialidades = [];
+		var profesionales = [];
+		var turnos = [];
+
+		dto.services.forEach(function(servDto) {
+			// Lleno las especialidades
+			servDto.specialities.forEach(function(espDto) {
+				especialidades.pushIfNotExist(espDto, function(e) {
+					return e.id === espDto.id;
+				});
+			});
+
+			// Lleno los profesionales
+			servDto.professionals.forEach(function(profDto) {
+				profesionales.pushIfNotExist(profDto, function(e) {
+					return e.id === profDto.id;
+				});
+			});
+		});
+
+		especialidades.forEach(function(espDto) {
+			// Card
+			espDto.divCard = $("<div></div>");
+			espDto.divCard.addClass("card wow fadeInRight mb-3");
+			espDto.divCard.attr('id', 'divEspecialidad-' + espDto.id);
+			espDto.divCard.attr('data-wow-delay', '0.3s');
+			divEspecialidades.append(espDto.divCard);
+
+			// Card Header
+			var divCardHeader = $("<div></div>");
+			divCardHeader.addClass("card-header bg-primary py-1");
+			espDto.divCard.append(divCardHeader);
+
+			var h2CardTitle = $("<h4></h4>");
+			h2CardTitle.addClass("card-title mb-0");
+			h2CardTitle.text(espDto.name);
+			divCardHeader.append(h2CardTitle);
+
+			// Card Body
+			var divCardBody = $("<div></div>");
+			divCardBody.addClass("card-body py-2");
+			espDto.divCard.append(divCardBody);
+
+			var divRow = $("<div></div>");
+			divRow.addClass("row");
+			divCardBody.append(divRow);
+
+			var divCol = $("<div></div>");
+			divCol.addClass("col-md-4");
+			
+			var divProf = $("<h6></h6>");
+			divProf.addClass("mb-2 text-dark");
+			
+			var divUbi = $("<h6></h6>");
+			divUbi.addClass("mb-2 text-muted");
+			
+			dto.services.forEach(function(servDto) {
+				var espIds = [];
+				servDto.specialities.forEach(function(esp) {
+					espIds.push(esp.id);
+				});
+				
+				if (espIds.includes(espDto.id)) {
+					servDto.professionals.forEach(function(profDto) {
+						servDto.divServ = divCol.clone();
+						
+						var div1 = divProf.clone();
+						div1.text("Profesional: " + profDto.first_name + " "
+								+ profDto.last_name);
+						var div2 = divUbi.clone();
+						div2.text("Ubicación: " + servDto.location);
+
+						servDto.divServ.append(div1, div2);
+						divRow.append(servDto.divServ);
+					});
+					
+					servDto.divPaciente = $("<h3></h3>");
+					servDto.divPaciente.attr('id', 'divPacienteServicio-' + servDto.id);
+					servDto.divPaciente.addClass("text-danger llamadoPaciente");
+					servDto.divServ.append(servDto.divPaciente);
+
+					var spanTextWrapper = $("<span></span>");
+					spanTextWrapper.addClass("text-wrapper");
+					servDto.divPaciente.append(spanTextWrapper);
+					
+					var spanLetters = $("<span></span>");
+					spanLetters.addClass("letters");
+					spanTextWrapper.append(spanLetters);					
+					
+					servDto.schedules.forEach(function(schDto) {
+						if(schDto.status == "CALLED"){
+							servDto.divPaciente.text(schDto.patient_first_name + " "
+									+ schDto.patient_last_name);
+						}
+					});
+				}
+			});
+		});		
+		
+		// Hago las animaciones
+		var divLlamados = $('.llamadoPaciente');
+		for (var i = 0; i < divLlamados.length; i++) {
+			var classDiv = "llamadoPaciente" + i;
+			$(divLlamados[i]).addClass(classDiv);
+			classDiv = "." + classDiv;
+			
+			// Wrap every letter in a span
+			var textWrapper = $(divLlamados[i], '.letters')[0];
+			textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+			
+			anime.timeline({loop: true})
+			  .add({
+			    targets: classDiv + ' .letter',
+			    translateX: [40,0],
+			    translateZ: 0,
+			    opacity: [0,1],
+			    easing: "easeOutExpo",
+			    duration: 1200,
+			    delay: (el, i) => 500 + 30 * i
+			  }).add({
+			    targets: classDiv + ' .letter',
+			    translateX: [0,-30],
+			    opacity: [1,0],
+			    easing: "easeInExpo",
+			    duration: 1100,
+			    delay: (el, i) => 100 + 30 * i
+			  });
+		}
+	};
+
+	iniciarPantalla();
+
+	new WOW().init();
+</script>
+</html>
