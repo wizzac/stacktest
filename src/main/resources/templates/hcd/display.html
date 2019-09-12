@@ -73,13 +73,47 @@ html, body, header, .view {
 			class="mask rgba-gradient justify-content-center align-items-center">
 			<div class="container">
 				<div class="row mt-1">
-					<div class="h1-responsive font-weight-bold wow fadeInLeft"
-						data-wow-delay="0.3s">
+					<div id="datosDisplay" class="h1-responsive font-weight-bold">
 						<h1 id="nombreDisplay" class="display-3"></h1>
 						<h4 id="detallesDisplay"></h4>
 					</div>
 				</div>
 				<div class="row">
+					<form id="formIniciar" class="col-md-12">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="mx-1" for="host">Host:</label> <input type="text"
+										class="form-control" id="host"
+										value="http://192.168.0.104:8080/saludServer">
+								</div>
+								<div class="form-group">
+									<label class="mx-1" for="userName">User Name:</label> <input
+										type="text" class="form-control" id="userName" value="1M">
+								</div>
+								<div class="form-group">
+									<label class="mx-1" for="password">Password:</label> <input
+										type="password" class="form-control" id="password"
+										value="1234">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="mx-1" for="healthcenter">HealthCenter Id:</label>
+									<input type="text" class="form-control" id="healthcenter"
+										value="22">
+								</div>
+								<div class="form-group">
+									<label class="mx-1" for="display">Display Id:</label> <input
+										type="text" class="form-control" id="display" value="">
+								</div>
+								<button id="btnIniciar" type="submit"
+									style="width: 200px; margin-top: 30px"
+									class="btn btn-primary float-right">Iniciar</button>
+							</div>
+						</div>
+					</form>
+
 					<div id="divEspecialidades" class="col-md-12"></div>
 				</div>
 			</div>
@@ -88,310 +122,136 @@ html, body, header, .view {
 </body>
 
 <script type="text/javascript">
-	//check if an element exists in array using a comparer function
-	//comparer : function(currentElement)
-	Array.prototype.inArray = function(comparer) {
-		for (var i = 0; i < this.length; i++) {
-			if (comparer(this[i]))
-				return true;
-		}
-		return false;
-	};
-
-	//adds an element to the array if it does not already exist using a comparer 
-	//function
-	Array.prototype.pushIfNotExist = function(element, comparer) {
-		if (!this.inArray(comparer)) {
-			this.push(element);
-		}
-	};
-
-	var crearMocksDTO = function() {
-		// Creo un dto de ejemplo
-		var dto = {};
-		dto.id = 1000;
-		dto.name = "Pantalla de Prueba";
-		dto.details = "Esta es una simple pantalla de prueba para la Gestión de Espera";
-		dto.server_datetime = new Date();
-		dto.services = [];
-
-		// Creo servicios de ejemplo
-		var servDto1 = {};
-		servDto1.id = 2000;
-		servDto1.name = "Servicio de Pediatría - Dr. Pérez";
-		servDto1.location = "Pasillo 12 Consult. A";
-		servDto1.specialities = [];
-		servDto1.professionals = [];
-		servDto1.schedules = [];
-		dto.services.push(servDto1);
-
-		var servDto2 = {};
-		servDto2.id = 2001;
-		servDto2.name = "Servicio de Odontología - Dra. Menéndez";
-		servDto2.location = "Pasillo 10 Consult. C";
-		servDto2.specialities = [];
-		servDto2.professionals = [];
-		servDto2.schedules = [];
-		dto.services.push(servDto2);
-
-		var servDto3 = {};
-		servDto3.id = 2002;
-		servDto3.name = "Servicio de Pediatría - Dr. Pipón";
-		servDto3.location = "Pasillo 3 Consult. A";
-		servDto3.specialities = [];
-		servDto3.professionals = [];
-		servDto3.schedules = [];
-		dto.services.push(servDto3);
-
-		var servDto4 = {};
-		servDto4.id = 2002;
-		servDto4.name = "Servicio de Cardiología - Dr. Mansilla";
-		servDto4.location = "Pasillo 7 Consult. A";
-		servDto4.specialities = [];
-		servDto4.professionals = [];
-		servDto4.schedules = [];
-		dto.services.push(servDto4);
-
-		var servDto5 = {};
-		servDto5.id = 2002;
-		servDto5.name = "Servicio de Cardiología - Dr. Torpe";
-		servDto5.location = "Pasillo 7 Consult. B";
-		servDto5.specialities = [];
-		servDto5.professionals = [];
-		servDto5.schedules = [];
-		dto.services.push(servDto5);
-
-		var servDto6 = {};
-		servDto6.id = 2002;
-		servDto6.name = "Servicio de Cardiología - Dr. Lozario";
-		servDto6.location = "Pasillo 7 Consult. C";
-		servDto6.specialities = [];
-		servDto6.professionals = [];
-		servDto6.schedules = [];
-		dto.services.push(servDto6);
-
-		// Creo especialidades de ejemplo 
-		var espDto1 = {};
-		espDto1.id = 3000;
-		espDto1.name = "Pediatría";
-		espDto1.code = "PED01";
-		servDto1.specialities.push(espDto1);
-
-		var espDto2 = {};
-		espDto2.id = 3001;
-		espDto2.name = "Odontología";
-		espDto2.code = "ODO01";
-		servDto2.specialities.push(espDto2);
-
-		var espDto3 = {};
-		espDto3.id = 3000;
-		espDto3.name = "Pediatría";
-		espDto3.code = "PED01";
-		servDto3.specialities.push(espDto3);
-
-		var espDto4 = {};
-		espDto4.id = 3002;
-		espDto4.name = "Cardiología";
-		espDto4.code = "CAR01";
-		servDto4.specialities.push(espDto4);
-		servDto5.specialities.push(espDto4);
-		servDto6.specialities.push(espDto4);
-
-		// Creo los profesionales
-		var profDto1 = {};
-		profDto1.id = 4000;
-		profDto1.first_name = "José Andrés";
-		profDto1.last_name = "Pérez";
-		servDto1.professionals.push(profDto1);
-
-		var profDto2 = {};
-		profDto2.id = 4001;
-		profDto2.first_name = "María Antonela";
-		profDto2.last_name = "Menéndez";
-		servDto2.professionals.push(profDto2);
-
-		var profDto3 = {};
-		profDto3.id = 4002;
-		profDto3.first_name = "José Pipo";
-		profDto3.last_name = "Pipón";
-		servDto3.professionals.push(profDto3);
-
-		var profDto4 = {};
-		profDto4.id = 4003;
-		profDto4.first_name = "César Augusto";
-		profDto4.last_name = "Mansilla";
-		servDto4.professionals.push(profDto4);
-
-		var profDto5 = {};
-		profDto5.id = 4004;
-		profDto5.first_name = "Diego Armando";
-		profDto5.last_name = "Torpe";
-		servDto5.professionals.push(profDto5);
-
-		var profDto6 = {};
-		profDto6.id = 4005;
-		profDto6.first_name = "Casimiro Saúl";
-		profDto6.last_name = "Lozario";
-		servDto6.professionals.push(profDto6);
-
-		// Creo los schedules
-		var nombres = [ "Juan", "Jorge", "Casimiro", "Laura", "Estefano",
-				"Uriel", "María", "Saura", "Miriam", "Ignacio", "Emanuel",
-				"Paulina", "Lautaro", "Ana", "Silvana", "Damián", "Josefina" ]
-		var apellidos = [ "Rodriguez", "López", "Matinez", "Jorio", "Aguero",
-				"Paelvecino", "Manija", "Dominguez", "Rosales", "Alcaraz",
-				"Ortega", "De la Cornisa", "Quiroga" ]
-		var cantTurnosProfesional = 10;
-
-		dto.services.forEach(function(servDto) {
-			for (var i = 0; i < cantTurnosProfesional; i++) {
-				var schDto = {};
-				schDto.id = 5000
-						+ ((servDto.id - 2000) * cantTurnosProfesional) + i;
-
-				var min = 0;
-				var max = nombres.length;
-				var pos = parseInt(Math.random() * (+max - +min) + +min, 10);
-				schDto.patient_first_name = nombres[pos];
-
-				max = apellidos.length;
-				pos = parseInt(Math.random() * (+max - +min) + +min, 10);
-				schDto.patient_last_name = apellidos[pos];
-
-				max = servDto.professionals.length;
-				pos = parseInt(Math.random() * (+max - +min) + +min, 10);
-				schDto.professional_id = servDto.professionals[pos].id;
-				schDto.service_id = servDto.id;
-				schDto.date_status = new Date();
-				schDto.status = i == 0 ? "CALLED" : "ACT";
-
-				servDto.schedules.push(schDto);
-			}
+	var especialidades = [];
+	var turnos = [];
+	
+	var procesarNotificacion = function(dto){
+		// Reviso para ver si el turno es nuevo o actualizarlo
+		var turno = null;
+		turnos.forEach(function(t){
+			if(t.paciente == dto.patient_name)
+				turno = t;
 		});
+		
+		var turnoNuevo = turno == null;
+		if(turnoNuevo){
+			turno = {};
+			turnos.push(turno);
+		}
+		
+		turno.paciente = dto.patient_name;
+		turno.profesional = dto.professional_name;
+		turno.especialidad = dto.speciality;
+		turno.ubicacion = dto.location;
+		turno.mostrar = dto.show;
 
-		return dto;
-	};
-
-	var dto = crearMocksDTO();
-
-	var iniciarPantalla = function() {
-		$('#nombreDisplay').html(dto.name);
-		$('#detallesDisplay').html(dto.details);
-		var divEspecialidades = $('#divEspecialidades');
-
-		var especialidades = [];
-		var profesionales = [];
-		var turnos = [];
-
-		dto.services.forEach(function(servDto) {
-			// Lleno las especialidades
-			servDto.specialities.forEach(function(espDto) {
-				especialidades.pushIfNotExist(espDto, function(e) {
-					return e.id === espDto.id;
-				});
-			});
-
-			// Lleno los profesionales
-			servDto.professionals.forEach(function(profDto) {
-				profesionales.pushIfNotExist(profDto, function(e) {
-					return e.id === profDto.id;
-				});
-			});
+		// Reviso para ver si la especialidad es nueva o actualizarla
+		var especialidad = null;
+		especialidades.forEach(function(e){
+			if(e.nombre == turno.especialidad)
+				especialidad = e;
 		});
+		
+		var especialidadNueva = especialidad == null;
+		if(especialidadNueva){
+			especialidad = {};
+			especialidad.profesionales = [];
+			especialidades.push(especialidad);
+		}
 
-		especialidades.forEach(function(espDto) {
+		especialidad.nombre = turno.especialidad;
+		
+		// Reviso para ver si el profesional es nuevo o actualizarlo
+		var profesional = null;
+		especialidad.profesionales.forEach(function(p){
+			if(p.nombre == turno.profesional)
+				profesional = p;
+		});
+		
+		var profesionalNuevo = profesional == null;
+		if(profesionalNuevo){
+			profesional = {};
+			especialidad.profesionales.push(profesional);
+		}
+		
+		profesional.nombre = turno.profesional;
+		
+		// Si la especialidad es nueva le genero una card
+		if(especialidadNueva){
+			var divEspecialidades = $('#divEspecialidades');
+			
 			// Card
-			espDto.divCard = $("<div></div>");
-			espDto.divCard.addClass("card wow fadeInRight mb-3");
-			espDto.divCard.attr('id', 'divEspecialidad-' + espDto.id);
-			espDto.divCard.attr('data-wow-delay', '0.3s');
-			divEspecialidades.append(espDto.divCard);
+			especialidad.div = $("<div></div>");
+			especialidad.div.addClass("card wow fadeInRight mb-3");
+			especialidad.div.attr('id', 'divEspecialidad-' + especialidad.nombre);
+			especialidad.div.attr('data-wow-delay', '0.3s');
+			divEspecialidades.append(especialidad.div);
 
 			// Card Header
 			var divCardHeader = $("<div></div>");
 			divCardHeader.addClass("card-header bg-primary py-1");
-			espDto.divCard.append(divCardHeader);
+			especialidad.div.append(divCardHeader);
 
 			var h2CardTitle = $("<h4></h4>");
 			h2CardTitle.addClass("card-title mb-0");
-			h2CardTitle.text(espDto.name);
+			h2CardTitle.text(especialidad.nombre);
 			divCardHeader.append(h2CardTitle);
 
 			// Card Body
 			var divCardBody = $("<div></div>");
 			divCardBody.addClass("card-body py-2");
-			espDto.divCard.append(divCardBody);
-
-			var divRow = $("<div></div>");
-			divRow.addClass("row");
-			divCardBody.append(divRow);
-
-			var divCol = $("<div></div>");
-			divCol.addClass("col-md-4");
+			especialidad.div.append(divCardBody);
+			
+			especialidad.row = $("<div></div>");
+			especialidad.row.addClass("row");
+			especialidad.row.attr('id', 'rowEspecialidad-' + especialidad.nombre);
+			divCardBody.append(especialidad.row);
+		}
+		
+		// Si el profesional es nuevo le genero una columna
+		if(profesionalNuevo){
+			profesional.col = $("<div></div>");
+			profesional.col.addClass("col-md-4");
+			profesional.col.attr('id', 'colProfesional-' + profesional.nombre);
+			especialidad.row.append(profesional.col);
 			
 			var divProf = $("<h6></h6>");
 			divProf.addClass("mb-2 text-dark");
+			divProf.text(turno.profesional);
+			profesional.col.append(divProf);
 			
 			var divUbi = $("<h6></h6>");
 			divUbi.addClass("mb-2 text-muted");
+			divUbi.text(turno.ubicacion);
+			profesional.col.append(divUbi);
 			
-			dto.services.forEach(function(servDto) {
-				var espIds = [];
-				servDto.specialities.forEach(function(esp) {
-					espIds.push(esp.id);
-				});
-				
-				if (espIds.includes(espDto.id)) {
-					servDto.professionals.forEach(function(profDto) {
-						servDto.divServ = divCol.clone();
-						
-						var div1 = divProf.clone();
-						div1.text("Profesional: " + profDto.first_name + " "
-								+ profDto.last_name);
-						var div2 = divUbi.clone();
-						div2.text("Ubicación: " + servDto.location);
-
-						servDto.divServ.append(div1, div2);
-						divRow.append(servDto.divServ);
-					});
-					
-					servDto.divPaciente = $("<h3></h3>");
-					servDto.divPaciente.attr('id', 'divPacienteServicio-' + servDto.id);
-					servDto.divPaciente.addClass("text-danger llamadoPaciente");
-					servDto.divServ.append(servDto.divPaciente);
-
-					var spanTextWrapper = $("<span></span>");
-					spanTextWrapper.addClass("text-wrapper");
-					servDto.divPaciente.append(spanTextWrapper);
-					
-					var spanLetters = $("<span></span>");
-					spanLetters.addClass("letters");
-					spanTextWrapper.append(spanLetters);					
-					
-					servDto.schedules.forEach(function(schDto) {
-						if(schDto.status == "CALLED"){
-							servDto.divPaciente.text(schDto.patient_first_name + " "
-									+ schDto.patient_last_name);
-						}
-					});
-				}
-			});
-		});		
+			profesional.col.divPaciente = $("<h3></h3>");
+			profesional.col.divPaciente.addClass("text-danger " + 
+					'divPaciente-' + turno.profesional.replace(" ", "_"));
+			profesional.col.append(profesional.col.divPaciente);
+		}
 		
-		// Hago las animaciones
-		var divLlamados = $('.llamadoPaciente');
-		for (var i = 0; i < divLlamados.length; i++) {
-			var classDiv = "llamadoPaciente" + i;
-			$(divLlamados[i]).addClass(classDiv);
-			classDiv = "." + classDiv;
+		if(turno.mostrar){
+			profesional.col.divPaciente.show();
+			profesional.col.divPaciente.empty();	
+
+			var spanTextWrapper = $("<span></span>");
+			spanTextWrapper.addClass("text-wrapper");
+			profesional.col.divPaciente.append(spanTextWrapper);
+			
+			var spanLetters = $("<span></span>");
+			spanLetters.addClass("letters");
+			spanTextWrapper.append(spanLetters);
+			
+			profesional.col.divPaciente.text(turno.paciente);		
 			
 			// Wrap every letter in a span
-			var textWrapper = $(divLlamados[i], '.letters')[0];
+			var textWrapper = profesional.col.divPaciente[0];
 			textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
-			
-			anime.timeline({loop: true})
+				
+			profesional.col.divPaciente.animacion = anime.timeline({loop: true})
 			  .add({
-			    targets: classDiv + ' .letter',
+			    targets: '.divPaciente-' + turno.profesional.replace(" ", "_") + ' .letter',
 			    translateX: [40,0],
 			    translateZ: 0,
 			    opacity: [0,1],
@@ -399,18 +259,103 @@ html, body, header, .view {
 			    duration: 1200,
 			    delay: (el, i) => 500 + 30 * i
 			  }).add({
-			    targets: classDiv + ' .letter',
+			    targets: '.divPaciente-' + turno.profesional.replace(" ", "_") + ' .letter',
 			    translateX: [0,-30],
 			    opacity: [1,0],
 			    easing: "easeInExpo",
 			    duration: 1100,
 			    delay: (el, i) => 100 + 30 * i
 			  });
+			
+		}else
+			profesional.col.divPaciente.hide();
+		
+
+		if(especialidadNueva){
+			new WOW().init();	
+			especialidad.div.removeClass("wow");
 		}
-	};
+	}
+	
+	var token = null;
+	var iniciarServicesDisplay = function(){
+		$.ajax({
+        	headers: { 'X-Authorization': 'Bearer ' + token },
+            url: $('#host').val() + "/secure/healthCenter/" + $('#healthcenter').val() + "/servicesDisplay/"+$('#display').val(),
+            type: "GET",
+            processData: true,
+            contentType: "application/json",
+            success: function (dto) {
+            	var divDatosDisplay = $('#datosDisplay');
+            	
+            	h1Nombre = $("<h1></h1>");
+            	h1Nombre.addClass("display-3 wow fadeInLeft");
+            	h1Nombre.attr('data-wow-delay', '0.3s');
+            	h1Nombre.text(dto.name);
+    			divDatosDisplay.append(h1Nombre);
+            	
+            	h3Detalles = $("<h3></h3>");
+            	h3Detalles.addClass("wow fadeInLeft");
+            	h3Detalles.attr('data-wow-delay', '0.3s');
+            	h3Detalles.text(dto.details);
+    			divDatosDisplay.append(h3Detalles);
+            	
+    			new WOW().init();
+    			h1Nombre.removeClass("wow");
+    			h3Detalles.removeClass("wow");
+            },
+            error: function (response) {
+                alert("Status: " + response.status + " " + response.statusText);
+                $('#formIniciar').show();
+                $('#btnIniciar')[0].disabled = false;
+            }
+        });
+	}
+	
+	var conectarse = function(){
+		var socket = new SockJS($('#host').val() + '/socket');
 
-	iniciarPantalla();
+		stompClient = Stomp.over(socket);
+		stompClient.heartbeat.outgoing = 30000; // client will send heartbeats every 20000ms
+		stompClient.heartbeat.incoming = 120000;
 
-	new WOW().init();
+		stompClient.connect({}, function(frame){
+			stompClient.subscribe('/servicesDisplay/' + $('#display').val(), procesarNotificacion)
+		}, funtion(e){
+			alert("Desconectado!");
+		});
+	}
+	
+	window.onload = function(){
+		var formIniciar = $('#formIniciar');
+		var userDto = {};
+		userDto.userName = $('#userName').val();
+		userDto.password = $('#password').val();
+		
+		formIniciar.unbind('submit').bind('submit', function () {
+            $('#btnIniciar')[0].disabled = true;
+            $.ajax({
+            	headers: { 'Accept': 'application/json, text/plain, */*' },
+                url: $('#host').val() + "/token/login/temporal",
+                xhrFields: { withCredentials: true },
+                type: "POST",
+                data: JSON.stringify(userDto),
+                processData: true,
+                contentType: "application/json",
+                success: function (dto) {
+                    token = dto[0].authToken.token;
+                    formIniciar.hide();
+                    iniciarServicesDisplay();
+                },
+                error: function (response) {
+                    alert("Status: " + response.status + " " + response.statusText);
+                    $('#btnIniciar')[0].disabled = false;
+                }
+            });
+	            
+	        return false;
+	    });
+	}
+	
 </script>
 </html>
