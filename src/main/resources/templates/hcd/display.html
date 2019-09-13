@@ -85,7 +85,7 @@ html, body, header, .view {
 								<div class="form-group">
 									<label class="mx-1" for="host">Host:</label> <input type="text"
 										class="form-control" id="host"
-										value="http://192.168.0.104:8080/saludServer">
+										value="http://localhost:8080/saludServer">
 								</div>
 								<div class="form-group">
 									<label class="mx-1" for="userName">User Name:</label> <input
@@ -125,7 +125,9 @@ html, body, header, .view {
 	var especialidades = [];
 	var turnos = [];
 	
-	var procesarNotificacion = function(dto){
+	var procesarNotificacion = function(notify){
+    	var dto = JSON.parse(notify.body);
+    	
 		// Reviso para ver si el turno es nuevo o actualizarlo
 		var turno = null;
 		turnos.forEach(function(t){
@@ -249,7 +251,8 @@ html, body, header, .view {
 			var textWrapper = profesional.col.divPaciente[0];
 			textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
 				
-			profesional.col.divPaciente.animacion = anime.timeline({loop: true})
+			//profesional.col.divPaciente.animacion = 
+				anime.timeline({loop: true})
 			  .add({
 			    targets: '.divPaciente-' + turno.profesional.replace(" ", "_") + ' .letter',
 			    translateX: [40,0],
@@ -267,8 +270,11 @@ html, body, header, .view {
 			    delay: (el, i) => 100 + 30 * i
 			  });
 			
-		}else
+			  new Audio('https://www.fesliyanstudios.com/sp.php?i=/5269.mp3').play();
+		}else{
 			profesional.col.divPaciente.hide();
+			  new Audio('https://www.fesliyanstudios.com/sp.php?i=/5265.mp3').play();
+		}
 		
 
 		if(especialidadNueva){
@@ -280,7 +286,11 @@ html, body, header, .view {
 	var token = null;
 	var iniciarServicesDisplay = function(){
 		$.ajax({
-        	headers: { 'X-Authorization': 'Bearer ' + token },
+        	headers: { 
+        		'Access-Control-Allow-Headers': '*', 
+        		'Accept': 'application/json, text/plain, */*',
+        		'X-Authorization': 'Bearer ' + token
+        		},
             url: $('#host').val() + "/secure/healthCenter/" + $('#healthcenter').val() + "/servicesDisplay/"+$('#display').val(),
             type: "GET",
             processData: true,
@@ -303,6 +313,8 @@ html, body, header, .view {
     			new WOW().init();
     			h1Nombre.removeClass("wow");
     			h3Detalles.removeClass("wow");
+    			
+    			conectarse();
             },
             error: function (response) {
                 alert("Status: " + response.status + " " + response.statusText);
@@ -320,8 +332,8 @@ html, body, header, .view {
 		stompClient.heartbeat.incoming = 120000;
 
 		stompClient.connect({}, function(frame){
-			stompClient.subscribe('/servicesDisplay/' + $('#display').val(), procesarNotificacion)
-		}, funtion(e){
+			stompClient.subscribe('/topic/servicesDisplay/' + $('#display').val(), procesarNotificacion);
+		}, function(e){
 			alert("Desconectado!");
 		});
 	}
@@ -335,7 +347,10 @@ html, body, header, .view {
 		formIniciar.unbind('submit').bind('submit', function () {
             $('#btnIniciar')[0].disabled = true;
             $.ajax({
-            	headers: { 'Accept': 'application/json, text/plain, */*' },
+            	headers: { 
+            		'Access-Control-Allow-Headers': '*', 
+            		'Accept': 'application/json, text/plain, */*'
+            		},
                 url: $('#host').val() + "/token/login/temporal",
                 xhrFields: { withCredentials: true },
                 type: "POST",

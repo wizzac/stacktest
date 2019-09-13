@@ -22,7 +22,7 @@ import com.google.gson.JsonSyntaxException;
 public class HCDConnection {
 	private String codificacion = "UTF-8";
 	private HashMap<String, String> parametros;
-	private String host = "http://192.168.0.124:8080/saludServer";
+	private String host = "http://localhost:8080/saludServer";
 	private String method;
 	private String mjePost;
 	private GsonBuilder gBuilder;
@@ -62,7 +62,7 @@ public class HCDConnection {
 		String json = "";
 
 		try {
-			// Genero los datos de conexión
+			// Genero los datos de conexiï¿½n
 			HttpURLConnection conn = crearConexion(url);
 			conn.connect();
 
@@ -70,7 +70,7 @@ public class HCDConnection {
 			InputStream in = new BufferedInputStream(conn.getInputStream());
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in, codificacion));
 
-			// Uno y deserealizo la respuesta separada or íneas
+			// Uno y deserealizo la respuesta separada or ï¿½neas
 			List<String> lineas = new ArrayList<>();
 			String linea;
 			while ((linea = reader.readLine()) != null)
@@ -121,11 +121,11 @@ public class HCDConnection {
 	}
 
 	private HttpURLConnection crearConexion(String url) throws Exception {
-		// Si hay parámetros se los agrego a la url
+		// Si hay parï¿½metros se los agrego a la url
 		if (parametros.size() > 0)
 			url += "?" + serealizarParametros();
 
-		// Creo la conexión
+		// Creo la conexiï¿½n
 		HttpURLConnection res = (HttpURLConnection) new URL(url).openConnection();
 
 		// Agrego las cabeceras
@@ -136,7 +136,7 @@ public class HCDConnection {
 		if (token != null)
 			res.setRequestProperty("X-Authorization", "Bearer " + token);
 
-		// Seteo los tiempos de conexión y la abro
+		// Seteo los tiempos de conexiï¿½n y la abro
 		res.setConnectTimeout(30 * 1000);
 		res.setReadTimeout(60 * 1000);
 		res.setDoOutput(true);
