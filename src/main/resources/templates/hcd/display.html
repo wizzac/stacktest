@@ -9,6 +9,8 @@
 	href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.9/css/mdb.css">
+<link rel="stylesheet"
+	href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -85,7 +87,7 @@ html, body, header, .view {
 								<div class="form-group">
 									<label class="mx-1" for="host">Host:</label> <input type="text"
 										class="form-control" id="host"
-										value="http://localhost:8080/saludServer">
+										value="http://192.168.0.104:8080/saludServer">
 								</div>
 								<div class="form-group">
 									<label class="mx-1" for="userName">User Name:</label> <input
@@ -103,9 +105,16 @@ html, body, header, .view {
 									<input type="text" class="form-control" id="healthcenter"
 										value="22">
 								</div>
-								<div class="form-group">
-									<label class="mx-1" for="display">Display Id:</label> <input
-										type="text" class="form-control" id="display" value="">
+								<div class="form-row">
+									<div class="form-group col-md-10">
+										<label class="mx-1" for="selectDisplays">Display UUID:</label>
+										<select id="selectDisplays" class="form-control ">
+										</select>
+									</div>
+									<div class="form-group col-md-2">
+										<i id="btnCargarDisplays" style="margin-top: 28px;"
+											class="form-control btn btn-info fa fa-refresh"></i>
+									</div>
 								</div>
 								<button id="btnIniciar" type="submit"
 									style="width: 200px; margin-top: 30px"
@@ -125,9 +134,7 @@ html, body, header, .view {
 	var especialidades = [];
 	var turnos = [];
 	
-	var procesarNotificacion = function(notify){
-    	var dto = JSON.parse(notify.body);
-    	
+	var procesarNotificacion = function(dto){
 		// Reviso para ver si el turno es nuevo o actualizarlo
 		var turno = null;
 		turnos.forEach(function(t){
@@ -228,8 +235,8 @@ html, body, header, .view {
 			profesional.col.append(divUbi);
 			
 			profesional.col.divPaciente = $("<h3></h3>");
-			profesional.col.divPaciente.addClass("text-danger " + 
-					'divPaciente-' + turno.profesional.replace(" ", "_"));
+			profesional.col.divPaciente.id = 'divPaciente' + Math.floor((Math.random() * 9999) + 1);
+			profesional.col.divPaciente.addClass("text-danger " + profesional.col.divPaciente.id);
 			profesional.col.append(profesional.col.divPaciente);
 		}
 		
@@ -254,7 +261,7 @@ html, body, header, .view {
 			//profesional.col.divPaciente.animacion = 
 				anime.timeline({loop: true})
 			  .add({
-			    targets: '.divPaciente-' + turno.profesional.replace(" ", "_") + ' .letter',
+			    targets: '.' + profesional.col.divPaciente.id + ' .letter',
 			    translateX: [40,0],
 			    translateZ: 0,
 			    opacity: [0,1],
@@ -262,7 +269,7 @@ html, body, header, .view {
 			    duration: 1200,
 			    delay: (el, i) => 500 + 30 * i
 			  }).add({
-			    targets: '.divPaciente-' + turno.profesional.replace(" ", "_") + ' .letter',
+			    targets: '.' + profesional.col.divPaciente.id + ' .letter',
 			    translateX: [0,-30],
 			    opacity: [1,0],
 			    easing: "easeInExpo",
@@ -282,44 +289,90 @@ html, body, header, .view {
 			especialidad.div.removeClass("wow");
 		}
 	}
-	
+
 	var token = null;
-	var iniciarServicesDisplay = function(){
+	var displays  = [];
+	var iniciarSelectDislpays = function(){
 		$.ajax({
         	headers: { 
         		'Access-Control-Allow-Headers': '*', 
         		'Accept': 'application/json, text/plain, */*',
         		'X-Authorization': 'Bearer ' + token
         		},
-            url: $('#host').val() + "/secure/healthCenter/" + $('#healthcenter').val() + "/servicesDisplay/"+$('#display').val(),
+            url: $('#host').val() + "/secure/healthCenter/" + $('#healthcenter').val() + "/servicesDisplay/",
             type: "GET",
             processData: true,
             contentType: "application/json",
-            success: function (dto) {
-            	var divDatosDisplay = $('#datosDisplay');
+            success: function (dtos) {
+            	displays = dtos;
+            	$('#selectDisplays').find('option').remove(); 
+            	var listitems = '';
+            	dtos.forEach( function(dto){
+            	    listitems += '<option value=' + dto.id + '>' + dto.name + '</option>';
+            	});
+            	$('#selectDisplays').append(listitems);
             	
-            	h1Nombre = $("<h1></h1>");
-            	h1Nombre.addClass("display-3 wow fadeInLeft");
-            	h1Nombre.attr('data-wow-delay', '0.3s');
-            	h1Nombre.text(dto.name);
-    			divDatosDisplay.append(h1Nombre);
-            	
-            	h3Detalles = $("<h3></h3>");
-            	h3Detalles.addClass("wow fadeInLeft");
-            	h3Detalles.attr('data-wow-delay', '0.3s');
-            	h3Detalles.text(dto.details);
-    			divDatosDisplay.append(h3Detalles);
-            	
-    			new WOW().init();
-    			h1Nombre.removeClass("wow");
-    			h3Detalles.removeClass("wow");
-    			
-    			conectarse();
+				$('#btnIniciar').show();
             },
             error: function (response) {
                 alert("Status: " + response.status + " " + response.statusText);
                 $('#formIniciar').show();
                 $('#btnIniciar')[0].disabled = false;
+            }
+        });
+	}
+	
+	var selectDisplay;
+	var iniciarServicesDisplay = function(){
+		displays.forEach(function(d){
+			if(d.id == $('#selectDisplays').val())
+				selectDisplay = d;
+		});
+
+		if(selectDisplay){
+	    	var divDatosDisplay = $('#datosDisplay');
+	    	
+	    	h1Nombre = $("<h1></h1>");
+	    	h1Nombre.addClass("display-3 wow fadeInLeft");
+	    	h1Nombre.attr('data-wow-delay', '0.3s');
+	    	h1Nombre.text(selectDisplay.name);
+			divDatosDisplay.append(h1Nombre);
+	    	
+	    	h3Detalles = $("<h3></h3>");
+	    	h3Detalles.addClass("wow fadeInLeft");
+	    	h3Detalles.attr('data-wow-delay', '0.3s');
+	    	h3Detalles.text(selectDisplay.details);
+			divDatosDisplay.append(h3Detalles);
+	    	
+			new WOW().init();
+			h1Nombre.removeClass("wow");
+			h3Detalles.removeClass("wow");
+			
+			cargarTurnosActuales();
+		}
+	}
+	
+	var cargarTurnosActuales = function(){
+		$.ajax({
+        	headers: { 
+        		'Access-Control-Allow-Headers': '*', 
+        		'Accept': 'application/json, text/plain, */*',
+        		'X-Authorization': 'Bearer ' + token
+        		},
+            url: $('#host').val() + "/secure/healthCenter/" + $('#healthcenter').val() + 
+            	"/servicesDisplay/calledSchedules/" + selectDisplay.id,
+            type: "GET",
+            processData: true,
+            contentType: "application/json",
+            success: function (dtos) {
+            	dtos.forEach(function(dto){
+            		procesarNotificacion(dto);
+            	});
+            	
+				conectarse();
+            },
+            error: function (response) {
+                alert("Status: " + response.status + " " + response.statusText);
             }
         });
 	}
@@ -332,21 +385,28 @@ html, body, header, .view {
 		stompClient.heartbeat.incoming = 120000;
 
 		stompClient.connect({}, function(frame){
-			stompClient.subscribe('/topic/servicesDisplay/' + $('#display').val(), procesarNotificacion);
+			stompClient.subscribe('/topic/servicesDisplay/' + selectDisplay.uuid, 
+			function(notify){
+				procesarNotificacion(JSON.parse(notify.body));
+			});
 		}, function(e){
 			alert("Desconectado!");
 		});
 	}
 	
 	window.onload = function(){
+		var btnIniciar = $('#btnIniciar')
+		var btnCargarDisplays = $('#btnCargarDisplays');
 		var formIniciar = $('#formIniciar');
 		var userDto = {};
+		
 		userDto.userName = $('#userName').val();
 		userDto.password = $('#password').val();
 		
-		formIniciar.unbind('submit').bind('submit', function () {
-            $('#btnIniciar')[0].disabled = true;
-            $.ajax({
+		btnIniciar.hide();
+		
+		btnCargarDisplays.click(function() {
+			$.ajax({
             	headers: { 
             		'Access-Control-Allow-Headers': '*', 
             		'Accept': 'application/json, text/plain, */*'
@@ -359,14 +419,18 @@ html, body, header, .view {
                 contentType: "application/json",
                 success: function (dto) {
                     token = dto[0].authToken.token;
-                    formIniciar.hide();
-                    iniciarServicesDisplay();
+ 					iniciarSelectDislpays();
                 },
                 error: function (response) {
                     alert("Status: " + response.status + " " + response.statusText);
-                    $('#btnIniciar')[0].disabled = false;
                 }
             });
+		});
+		
+		formIniciar.unbind('submit').bind('submit', function () {
+			btnIniciar[0].disabled = true;
+            formIniciar.hide();
+            iniciarServicesDisplay();
 	            
 	        return false;
 	    });
