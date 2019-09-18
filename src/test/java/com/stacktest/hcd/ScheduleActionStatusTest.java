@@ -5,9 +5,18 @@ import org.junit.Test;
 import com.stacktest.hcd.dto.ScheduleDto;
 
 public class ScheduleActionStatusTest {
-	private int idScheduleCuk = 295560;
+	private int idScheduleAdmin = 295595;
+	private int idScheduleCuk = 295561;
 	private int idSchedulePacheco = 295580;
-	private int idScheduleDomene = 295553;
+	private int idScheduleDomene = 290048;
+	
+	@Test
+	public void callPatientScheduleForAdmin() {
+		HCDConnection con = new HCDConnection("1M", "1234");
+		ScheduleDto dto = con.ejecutar("PUT", "/secure/healthCenter/22/callPatientSchedule/" + idScheduleAdmin,
+				ScheduleDto.class);
+		assert dto != null;
+	}
 
 	@Test
 	public void callPatientScheduleForCuk() {

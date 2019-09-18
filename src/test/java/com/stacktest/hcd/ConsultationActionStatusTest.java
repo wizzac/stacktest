@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 
 @SuppressWarnings("rawtypes")
 public class ConsultationActionStatusTest {
-	private int idSchedule = 289706;
-	private int idConsultation = 68572;
+	private int idSchedule = 290048;
+	private int idConsultation = 0;
 
 	@Test
 	public void createConsultation() {

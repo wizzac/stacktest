@@ -20,8 +20,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 public class HCDConnection {	
-	private String host = "http://localhost:8080/saludServer";
-	//private String host = "http://192.168.0.104:8080/saludServer";
+	//private String host = "http://localhost:8080/saludServer";
+	private String host = "http://192.168.0.104:8080/saludServer";
 
 	private String codificacion = "UTF-8";
 	private HashMap<String, String> parametros;
