@@ -20,8 +20,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 public class HCDConnection {	
-	//private String host = "http://localhost:8080/saludServer";
-	private String host = "http://192.168.0.104:8080/saludServer";
+	private String host = "http://localhost:8080/saludServer";
+	//private String host = "http://192.168.0.104:8080/saludServer";
 
 	private String codificacion = "UTF-8";
 	private HashMap<String, String> parametros;
@@ -32,13 +32,17 @@ public class HCDConnection {
 
 	public HCDConnection(String username, String password) {
 		parametros = new HashMap<>();
-		gBuilder = new GsonBuilder();
+		gBuilder = new GsonBuilder().setDateFormat("dd-MM-yyyy HH:mm:ss");
 
 		UserPassDTO upDto = new UserPassDTO(username, password);
 		mjePost = gBuilder.create().toJson(upDto);
 		ResLoginDTO[] dto = ejecutar("GET", "/token/login/temporal", ResLoginDTO[].class);
 		token = dto[0].authToken.token;
 		mjePost = null;
+	}
+
+	public void setHost(String url) {
+		host = url;
 	}
 
 	public void setMensajePost(String mensaje) {

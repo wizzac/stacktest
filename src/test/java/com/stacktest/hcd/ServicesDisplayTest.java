@@ -57,7 +57,7 @@ public class ServicesDisplayTest {
 	}
 
 	@Test
-	public void findAllServicesDisplay() {
+	public void getAllServicesDisplay() {
 		HCDConnection con = new HCDConnection("1M", "1234");
 		ServicesDisplayDto[] dtos = con.ejecutar("GET", "/secure/healthCenter/22/servicesDisplay",
 				ServicesDisplayDto[].class);
@@ -67,7 +67,6 @@ public class ServicesDisplayTest {
 	@Test
 	public void getCalledSchedules() {
 		HCDConnection con = new HCDConnection("1M", "1234");
-		con.getGsonBuilder().setDateFormat("dd-MM-yyyy HH:mm:ss");
 		ScheduleDto[] dtos = con.ejecutar("GET", "/secure/healthCenter/22/servicesDisplay/calledSchedules/" + displayId,
 				ScheduleDto[].class);
 		assert dtos != null;

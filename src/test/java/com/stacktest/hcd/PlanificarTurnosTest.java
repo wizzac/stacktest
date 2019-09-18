@@ -51,7 +51,6 @@ public class PlanificarTurnosTest {
 		GsonBuilder gBuilder = new GsonBuilder();
 		gBuilder.setDateFormat("dd-MM-yyyy HH:mm:ss");
 
-		con.getGsonBuilder().setDateFormat("dd-MM-yyyy HH:mm:ss");
 		con.setMensajePost(gBuilder.create().toJson(dto));
 		ServiceHasProfesionalDto[] resDto = con.ejecutar("POST", "/secure/healthCenter/22/planning?isValidate=1",
 				ServiceHasProfesionalDto[].class);
@@ -105,7 +104,6 @@ public class PlanificarTurnosTest {
 			GsonBuilder gBuilder = new GsonBuilder();
 			gBuilder.setDateFormat("dd-MM-yyyy HH:mm:ss");
 
-			con.getGsonBuilder().setDateFormat("dd-MM-yyyy HH:mm:ss");
 			con.setMensajePost(gBuilder.create().toJson(dto));
 
 			try {

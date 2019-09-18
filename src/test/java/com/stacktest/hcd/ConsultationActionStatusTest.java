@@ -17,14 +17,6 @@ public class ConsultationActionStatusTest {
 	}
 
 	@Test
-	public void createConsultationFromMobile() {
-		HCDConnection con = new HCDConnection("32811727M", "1234");
-		ResponseEntity resp = con.ejecutar("POST", "/secure/healthCenter/22/mobile/consultation/" + idSchedule,
-				ResponseEntity.class);
-		assert resp != null;
-	}
-
-	@Test
 	public void cancelConsultation() {
 		HCDConnection con = new HCDConnection("32811727M", "1234");
 		ResponseEntity resp = con.ejecutar("PUT", "/secure/healthCenter/22/cancelconsultation/" + idConsultation,
