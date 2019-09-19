@@ -8,7 +8,7 @@ public class ScheduleActionStatusTest {
 	private int idScheduleAdmin = 295595;
 	private int idScheduleCuk = 295561;
 	private int idSchedulePacheco = 295580;
-	private int idScheduleDomene = 295635;
+	private int idScheduleDomene = 295637;
 	
 	@Test
 	public void callPatientScheduleForAdmin() {

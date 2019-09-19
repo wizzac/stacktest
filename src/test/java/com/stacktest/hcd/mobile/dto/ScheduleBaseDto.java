@@ -16,6 +16,7 @@ public class ScheduleBaseDto {
 	private Date scheduledDateTo;
 	private String status;
 	private Date arrivalTime;
+	private Date calledDate;
 	private PersonDto person;
 	private String statusLabel;
 	private String statusLabelColor;
@@ -101,6 +102,15 @@ public class ScheduleBaseDto {
 
 	public void setArrivalTime(Date arrivalTime) {
 		this.arrivalTime = arrivalTime;
+	}
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = ConstantConfig.SYSTEM_TIMEZONE)
+	public Date getCalledDate() {
+		return calledDate;
+	}
+
+	public void setCalledDate(Date callDate) {
+		this.calledDate = callDate;
 	}
 
 	public PersonDto getPerson() {
