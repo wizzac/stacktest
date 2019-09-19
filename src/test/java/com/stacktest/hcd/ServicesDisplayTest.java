@@ -5,8 +5,8 @@ import java.util.Random;
 import org.junit.Test;
 
 import com.google.gson.Gson;
-import com.stacktest.hcd.dto.ScheduleDto;
-import com.stacktest.hcd.dto.ServicesDisplayDto;
+import com.stacktest.hcd.dto.servicesDisplay.ScheduleDto;
+import com.stacktest.hcd.dto.servicesDisplay.ServicesDisplayDto;
 
 public class ServicesDisplayTest {
 	public int displayId = 1;
@@ -67,7 +67,15 @@ public class ServicesDisplayTest {
 	@Test
 	public void getCalledSchedules() {
 		HCDConnection con = new HCDConnection("1M", "1234");
-		ScheduleDto[] dtos = con.ejecutar("GET", "/secure/healthCenter/22/servicesDisplay/calledSchedules/" + displayId,
+		ScheduleDto[] dtos = con.ejecutar("GET", "/secure/healthCenter/22/servicesDisplay/" + displayId + "/calledSchedules/",
+				ScheduleDto[].class);
+		assert dtos != null;
+	}
+
+	@Test
+	public void getAllCalledSchedules() {
+		HCDConnection con = new HCDConnection("1M", "1234");
+		ScheduleDto[] dtos = con.ejecutar("GET", "/secure/healthCenter/22/servicesDisplay/" + displayId + "/allCalledSchedules/",
 				ScheduleDto[].class);
 		assert dtos != null;
 	}

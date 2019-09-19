@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.stacktest.hcd.dto.servicesDisplay.ScheduleDto;
 
 public class ConsultationDto {
 

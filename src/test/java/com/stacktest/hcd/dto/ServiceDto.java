@@ -2,6 +2,8 @@ package com.stacktest.hcd.dto;
 
 import java.util.List;
 
+import com.stacktest.hcd.dto.servicesDisplay.ScheduleDto;
+
 public class ServiceDto {
 	private int id;
 	private String name;

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
+import org.springframework.hateoas.PagedResources;
 
 import com.google.gson.GsonBuilder;
 import com.stacktest.hcd.dto.AppointmentV1Dto;
@@ -15,11 +16,11 @@ import com.stacktest.hcd.dto.ProfessionalDto;
 import com.stacktest.hcd.dto.ServiceDto;
 import com.stacktest.hcd.dto.ServiceHasProfesionalDto;
 
-public class PlanificarTurnosTest {
-	public int idService = 2720;// 2722;
+public class PlanificacionTest {
+	public int idService = 2725;// 2722;
 	public int professionalId = 2519;// 2520;
 	public int appointment_id = 295554;// Actualizar al generar el planning
-	public String date = "16/09/2019";
+	public String date = "18/09/2019";
 	public String timeStart = "19:00";
 	public String timeEnd = "20:00";
 
@@ -118,5 +119,15 @@ public class PlanificarTurnosTest {
 		}
 
 		assert res.size() > 0;
+	}	
+
+	@Test
+	@SuppressWarnings("rawtypes")
+	public void searchPlanning() {
+		HCDConnection con = new HCDConnection("1M", "1234");
+		PagedResources res = con.ejecutar("GET", "/secure/healthCenter/22/schedule/today?search=&page=0&size=20",
+				PagedResources.class);
+		
+		assert res != null;
 	}
 }

@@ -360,7 +360,7 @@ html, body, header, .view {
         		'X-Authorization': 'Bearer ' + token
         		},
             url: $('#host').val() + "/secure/healthCenter/" + $('#healthcenter').val() + 
-            	"/servicesDisplay/calledSchedules/" + selectDisplay.id,
+            	"/servicesDisplay/" + selectDisplay.id + "/calledSchedules",
             type: "GET",
             processData: true,
             contentType: "application/json",
@@ -406,6 +406,7 @@ html, body, header, .view {
 		btnIniciar.hide();
 		
 		btnCargarDisplays.click(function() {
+			$('#selectDisplays').empty();
 			$.ajax({
             	headers: { 
             		'Access-Control-Allow-Headers': '*', 

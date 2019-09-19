@@ -1,4 +1,4 @@
-package com.stacktest.hcd.dto;
+package com.stacktest.hcd.dto.servicesDisplay;
 
 import java.util.List;
 

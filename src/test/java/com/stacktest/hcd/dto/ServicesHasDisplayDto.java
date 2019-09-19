@@ -1,5 +1,7 @@
 package com.stacktest.hcd.dto;
 
+import com.stacktest.hcd.dto.servicesDisplay.ServicesDisplayDto;
+
 public class ServicesHasDisplayDto {
 	private int id;
 
