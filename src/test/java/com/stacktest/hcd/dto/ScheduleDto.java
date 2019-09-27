@@ -7,14 +7,16 @@ import com.stacktest.hcd.dto.servicesDisplay.ServicesDisplayDto;
 
 public class ScheduleDto {
 	private int id;
-	private Date dateCreated;
-	private Date dateModified;
+	private long dateCreated;
+	private long dateModified;
 	private Boolean telemedicine;
 	private Boolean overSchedule;
+	private Boolean firstTime;
 	private String scheduledType;
 	private Date scheduledDateFrom;
 	private Date scheduledDateTo;
 	private Date calledDate;
+	private Boolean canCallPatient;
 	private String status;
 	private Date arrivalTime;
 	private List<ConsultationDto> consultations;
@@ -22,7 +24,7 @@ public class ScheduleDto {
 	// private OperatorDto modifiedBy;
 	private PersonDto person;
 	private boolean freeSchedule;
-	private String statusLabel;
+	String statusLabel;
 	private String statusLabelColor;
 	// private SurgeryDto surgery;
 	private ServiceDto service;
@@ -34,6 +36,8 @@ public class ScheduleDto {
 	private Date takenToAssignedDateLimit;
 	// private OperatorDto takenToAssignedOperator;
 	private List<ServicesDisplayDto> servicesDisplays;
+	private MessageOperatorDto messageWriter;
+	private String message;
 
 	public int getId() {
 		return id;
@@ -43,19 +47,19 @@ public class ScheduleDto {
 		this.id = id;
 	}
 
-	public Date getDateCreated() {
+	public long getDateCreated() {
 		return dateCreated;
 	}
 
-	public void setDateCreated(Date dateCreated) {
+	public void setDateCreated(long dateCreated) {
 		this.dateCreated = dateCreated;
 	}
 
-	public Date getDateModified() {
+	public long getDateModified() {
 		return dateModified;
 	}
 
-	public void setDateModified(Date dateModified) {
+	public void setDateModified(long dateModified) {
 		this.dateModified = dateModified;
 	}
 
@@ -73,6 +77,14 @@ public class ScheduleDto {
 
 	public void setOverSchedule(Boolean overSchedule) {
 		this.overSchedule = overSchedule;
+	}
+
+	public Boolean getFirstTime() {
+		return firstTime;
+	}
+
+	public void setFirstTime(Boolean firstTime) {
+		this.firstTime = firstTime;
 	}
 
 	public String getScheduledType() {
@@ -105,6 +117,14 @@ public class ScheduleDto {
 
 	public void setCalledDate(Date calledDate) {
 		this.calledDate = calledDate;
+	}
+
+	public Boolean getCanCallPatient() {
+		return canCallPatient;
+	}
+
+	public void setCanCallPatient(Boolean canCallPatient) {
+		this.canCallPatient = canCallPatient;
 	}
 
 	public String getStatus() {
@@ -217,5 +237,21 @@ public class ScheduleDto {
 
 	public void setServicesDisplays(List<ServicesDisplayDto> servicesDisplays) {
 		this.servicesDisplays = servicesDisplays;
+	}
+
+	public MessageOperatorDto getMessageWriter() {
+		return messageWriter;
+	}
+
+	public void setMessageWriter(MessageOperatorDto messageWriter) {
+		this.messageWriter = messageWriter;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

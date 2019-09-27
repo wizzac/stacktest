@@ -4,6 +4,7 @@ public class ScheduleSimpleDto extends ScheduleBaseDto {
 	private ServiceMinDto service;
 	private ProfessionalMinDto professional;
 	private boolean hasServicesDisplay;
+	private boolean canCallPatient;
 	
 	public ServiceMinDto getService() {
 		return service;
@@ -27,5 +28,13 @@ public class ScheduleSimpleDto extends ScheduleBaseDto {
 
 	public void setHasServicesDisplay(boolean hasServicesDisplay) {
 		this.hasServicesDisplay = hasServicesDisplay;
+	}
+
+	public Boolean getCanCallPatient() {
+		return canCallPatient;
+	}
+
+	public void setCanCallPatient(Boolean canCallPatient) {
+		this.canCallPatient = canCallPatient;
 	}
 }

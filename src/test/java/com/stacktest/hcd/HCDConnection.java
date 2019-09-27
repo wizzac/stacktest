@@ -3,28 +3,38 @@ package com.stacktest.hcd;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.slf4j.LoggerFactory;
+import org.springframework.hateoas.PagedResources;
+
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
-public class HCDConnection {	
-	//private String host = "http://localhost:8080/saludServer";
-	private String host = "http://192.168.0.104:8080/saludServer";
+public class HCDConnection {
+	private String urlHost = "http://localhost:8080/saludServer";
+	// private String urlHost = "http://192.168.0.104:8080/saludServer";
+	// private String urlHost = "http://64.215.200.200:8080/saludServer";
 
 	private String codificacion = "UTF-8";
 	private HashMap<String, String> parametros;
+	private String jsonResponse;
 	private String method;
 	private String mjePost;
 	private GsonBuilder gBuilder;
@@ -42,7 +52,7 @@ public class HCDConnection {
 	}
 
 	public void setHost(String url) {
-		host = url;
+		urlHost = url;
 	}
 
 	public void setMensajePost(String mensaje) {
@@ -63,13 +73,13 @@ public class HCDConnection {
 
 	public <T> T ejecutar(String method, String urlPart, Class<T> type) {
 		this.method = method;
-		String url = host + urlPart;
+		String url = urlHost + urlPart;
 		T res = null;
-		String json = "";
+		HttpURLConnection conn = null;
 
 		try {
 			// Genero los datos de conexi�n
-			HttpURLConnection conn = crearConexion(url);
+			conn = crearConexion(url);
 			conn.connect();
 
 			// Obtengo la respuesta
@@ -82,33 +92,64 @@ public class HCDConnection {
 			while ((linea = reader.readLine()) != null)
 				lineas.add(linea);
 
+			jsonResponse = "";
 			for (int i = 0; i < lineas.size(); i++) {
-				json += lineas.get(i);
+				jsonResponse += lineas.get(i);
 				if (i < lineas.size() - 1)
-					json += System.getProperty("line.separator");
+					jsonResponse += System.getProperty("line.separator");
 			}
 
-			res = gBuilder.create().fromJson(json, type);
+			res = gBuilder.create().fromJson(jsonResponse, type);
 		} catch (ConnectException e) {
 			e.printStackTrace();
-			assert false;
 		} catch (SocketTimeoutException e) {
 			e.printStackTrace();
-			assert false;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
-			assert false;
 		} catch (JsonSyntaxException e) {
 			e.printStackTrace();
-			assert false;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-			assert false;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (RuntimeException e) {
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
-			assert false;
+		} finally {
+			try {
+				if (conn.getResponseCode() != 200) {
+					InputStream in = new BufferedInputStream(conn.getErrorStream());
+					BufferedReader reader = new BufferedReader(new InputStreamReader(in, codificacion));
+
+					String linea;
+					while ((linea = reader.readLine()) != null)
+						LoggerFactory.getLogger(this.getClass()).debug(linea);
+
+					assert false;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				assert false;
+			}
 		}
 
+		return res;
+	}
+
+	public <T> T ejecutarForPagedResources(String method, String urlPart, Class<T> itemType) {
+		T res = null;
+		try {
+			Gson gson = gBuilder.create();
+			@SuppressWarnings("rawtypes")
+			PagedResources pr = ejecutar(method, urlPart, PagedResources.class);
+			String json = gson.toJson(pr.getContent());
+			res = gson.fromJson(json, itemType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return res;
 	}
 
@@ -170,6 +211,27 @@ public class HCDConnection {
 		public Class<T> getMyType() {
 			return this.type;
 		}
+	}
+
+	public Type getType(final Class<?> rawClass, final Class<?> parameter) {
+		ParameterizedType res = new ParameterizedType() {
+			@Override
+			public Type[] getActualTypeArguments() {
+				return new Type[] { parameter };
+			}
+
+			@Override
+			public Type getRawType() {
+				return rawClass;
+			}
+
+			@Override
+			public Type getOwnerType() {
+				return null;
+			}
+		};
+
+		return res;
 	}
 
 	public class UserPassDTO {

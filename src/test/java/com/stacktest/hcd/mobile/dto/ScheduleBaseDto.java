@@ -11,6 +11,7 @@ public class ScheduleBaseDto {
 	private long dateModified;
 	private boolean telemedicine;
 	private boolean overSchedule;
+	private boolean firstTime;
 	private String scheduledType;
 	private Date scheduledDateFrom;
 	private Date scheduledDateTo;
@@ -59,6 +60,14 @@ public class ScheduleBaseDto {
 
 	public void setOverSchedule(boolean overSchedule) {
 		this.overSchedule = overSchedule;
+	}
+
+	public boolean isFirstTime() {
+		return firstTime;
+	}
+
+	public void setFirstTime(boolean firstTime) {
+		this.firstTime = firstTime;
 	}
 
 	public String getScheduledType() {

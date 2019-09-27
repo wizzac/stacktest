@@ -1,9 +1,7 @@
 package com.stacktest.hcd;
 
 import org.junit.Test;
-import org.springframework.http.ResponseEntity;
 
-@SuppressWarnings("rawtypes")
 public class ConsultationActionStatusTest {
 	private int idSchedule = 290048;
 	private int idConsultation = 0;
@@ -11,16 +9,24 @@ public class ConsultationActionStatusTest {
 	@Test
 	public void createConsultation() {
 		HCDConnection con = new HCDConnection("32811727M", "1234");
-		ResponseEntity resp = con.ejecutar("POST", "/secure/healthCenter/22/consultation/" + idSchedule,
-				ResponseEntity.class);
+		Object resp = con.ejecutar("POST", "/secure/healthCenter/22/consultation/" + idSchedule,
+				Object.class);
+		assert resp != null;
+	}
+
+	@Test
+	public void createConsultationMobile() {
+		HCDConnection con = new HCDConnection("32811727M", "1234");
+		Object resp = con.ejecutar("POST", "/secure/healthCenter/22/consultation/" + idSchedule,
+				Object.class);
 		assert resp != null;
 	}
 
 	@Test
 	public void cancelConsultation() {
 		HCDConnection con = new HCDConnection("32811727M", "1234");
-		ResponseEntity resp = con.ejecutar("PUT", "/secure/healthCenter/22/cancelconsultation/" + idConsultation,
-				ResponseEntity.class);
+		Object resp = con.ejecutar("PUT", "/secure/healthCenter/22/cancelconsultation/" + idConsultation,
+				Object.class);
 		assert resp != null;
 	}
 }

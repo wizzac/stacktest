@@ -5,10 +5,10 @@ import org.junit.Test;
 import com.stacktest.hcd.mobile.dto.ScheduleSimpleDto;
 
 public class ScheduleActionStatusTest {
-	private int idScheduleAdmin = 295595;
+	private int idScheduleAdmin = 295561;
 	private int idScheduleCuk = 295561;
 	private int idSchedulePacheco = 295580;
-	private int idScheduleDomene = 295637;
+	private int idScheduleDomene = 302572;
 	
 	@Test
 	public void callPatientScheduleForAdmin() {
@@ -29,7 +29,7 @@ public class ScheduleActionStatusTest {
 	@Test
 	public void callPatientScheduleForDomene() {
 		HCDConnection con = new HCDConnection("32811727M", "1234");
-		ScheduleSimpleDto dto = con.ejecutar("PUT", "/secure/healthCenter/22/callPatientSchedule/" + idScheduleDomene,
+		ScheduleSimpleDto dto = con.ejecutar("PUT", "/secure/healthCenter/15/callPatientSchedule/" + idScheduleDomene,
 				ScheduleSimpleDto.class);
 		assert dto != null;
 	}
