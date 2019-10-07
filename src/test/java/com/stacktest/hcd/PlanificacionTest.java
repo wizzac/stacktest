@@ -124,17 +124,26 @@ public class PlanificacionTest {
 	@Test
 	public void searchPlanningForAdmin() {
 		HCDConnection con = new HCDConnection("1M", "1234");
-		ScheduleDto[] res = con.ejecutarForPagedResources("GET",
-				"/secure/healthCenter/22/schedule/today?search=SERVICIO%20DOMENE%20PRUEBAS%20DISPLAY%20HD", ScheduleDto[].class);
+		ScheduleDto[] res = con.ejecutarForPagedResources("GET", "/secure/healthCenter/22/schedule/today?search=",
+				ScheduleDto[].class);
 
 		assert res != null;
 	}
-	
+
 	@Test
 	public void searchPlanningForCuk() {
 		HCDConnection con = new HCDConnection("38830991M", "1234");
-		ScheduleDto[] res = con.ejecutarForPagedResources("GET",
-				"/secure/healthCenter/22/schedule/today?search=&page=0&size=1", ScheduleDto[].class);
+		ScheduleDto[] res = con.ejecutarForPagedResources("GET", "/secure/healthCenter/22/schedule/today?search=",
+				ScheduleDto[].class);
+
+		assert res != null;
+	}
+
+	@Test
+	public void searchPlanningForDomene() {
+		HCDConnection con = new HCDConnection("32811727M", "1234");
+		ScheduleDto[] res = con.ejecutarForPagedResources("GET", "/secure/healthCenter/22/schedule/today?search=",
+				ScheduleDto[].class);
 
 		assert res != null;
 	}

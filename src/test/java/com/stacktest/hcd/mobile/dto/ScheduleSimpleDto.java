@@ -1,10 +1,14 @@
 package com.stacktest.hcd.mobile.dto;
 
+import com.stacktest.hcd.dto.MessageOperatorDto;
+
 public class ScheduleSimpleDto extends ScheduleBaseDto {
 	private ServiceMinDto service;
 	private ProfessionalMinDto professional;
 	private boolean hasServicesDisplay;
 	private boolean canCallPatient;
+	private String message;
+	private MessageOperatorDto messageOperator;
 	
 	public ServiceMinDto getService() {
 		return service;
@@ -36,5 +40,21 @@ public class ScheduleSimpleDto extends ScheduleBaseDto {
 
 	public void setCanCallPatient(Boolean canCallPatient) {
 		this.canCallPatient = canCallPatient;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public MessageOperatorDto getMessageOperator() {
+		return messageOperator;
+	}
+
+	public void setMessageOperator(MessageOperatorDto messageOperator) {
+		this.messageOperator = messageOperator;
 	}
 }

@@ -36,7 +36,7 @@ public class ScheduleDto {
 	private Date takenToAssignedDateLimit;
 	// private OperatorDto takenToAssignedOperator;
 	private List<ServicesDisplayDto> servicesDisplays;
-	private MessageOperatorDto messageWriter;
+	private MessageOperatorDto messageOperator;
 	private String message;
 
 	public int getId() {
@@ -239,12 +239,12 @@ public class ScheduleDto {
 		this.servicesDisplays = servicesDisplays;
 	}
 
-	public MessageOperatorDto getMessageWriter() {
-		return messageWriter;
+	public MessageOperatorDto getMessageOperator() {
+		return messageOperator;
 	}
 
-	public void setMessageWriter(MessageOperatorDto messageWriter) {
-		this.messageWriter = messageWriter;
+	public void setMessageWriter(MessageOperatorDto messageOperator) {
+		this.messageOperator = messageOperator;
 	}
 
 	public String getMessage() {

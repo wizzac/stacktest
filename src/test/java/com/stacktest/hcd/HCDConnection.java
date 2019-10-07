@@ -28,9 +28,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 public class HCDConnection {
-	private String urlHost = "http://localhost:8080/saludServer";
-	// private String urlHost = "http://192.168.0.104:8080/saludServer";
+	// private String urlHost = "http://localhost:8080/saludServer";
 	// private String urlHost = "http://64.215.200.200:8080/saludServer";
+	private String urlHost = "http://192.168.10.92:8080/saludServer";
+	// private String urlHost = "http://192.168.0.104:8080/saludServer";
 
 	private String codificacion = "UTF-8";
 	private HashMap<String, String> parametros;
@@ -65,6 +66,10 @@ public class HCDConnection {
 
 	public void agregarParametroGet(String clave, String valor) {
 		parametros.put(clave, valor);
+	}
+
+	public void agregarParametroGet(String clave, int valor) {
+		parametros.put(clave, String.valueOf(valor));
 	}
 
 	public GsonBuilder getGsonBuilder() {
@@ -120,7 +125,7 @@ public class HCDConnection {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (conn.getResponseCode() != 200) {
+				if (conn != null && conn.getResponseCode() != 200) {
 					InputStream in = new BufferedInputStream(conn.getErrorStream());
 					BufferedReader reader = new BufferedReader(new InputStreamReader(in, codificacion));
 
