@@ -28,9 +28,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 public class HCDConnection {
-	// private String urlHost = "http://localhost:8080/saludServer";
+	private String urlHost = "http://localhost:8080/saludServer";
 	// private String urlHost = "http://64.215.200.200:8080/saludServer";
-	private String urlHost = "http://192.168.10.92:8080/saludServer";
+	// private String urlHost = "http://192.168.10.92:8080/saludServer";
 	// private String urlHost = "http://192.168.0.104:8080/saludServer";
 
 	private String codificacion = "UTF-8";
