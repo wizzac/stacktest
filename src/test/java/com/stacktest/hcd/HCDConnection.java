@@ -60,6 +60,10 @@ public class HCDConnection {
 		mjePost = mensaje;
 	}
 
+	public void setMensajePost(Object jsonElement) {
+		mjePost = gBuilder.create().toJson(jsonElement);
+	}
+
 	public void setMethod(String method) {
 		this.method = method;
 	}

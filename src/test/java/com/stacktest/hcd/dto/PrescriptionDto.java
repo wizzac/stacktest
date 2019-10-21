@@ -1,13 +1,5 @@
 package com.stacktest.hcd.dto;
 
-import java.util.Date;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.stacktest.hcd.config.ConstantConfig;
-
 public class PrescriptionDto {
 
 	private Integer id;
@@ -32,8 +24,7 @@ public class PrescriptionDto {
 
 	private VademecumDto vademecum;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = ConstantConfig.SYSTEM_TIMEZONE)
-	private Date date;
+	private String date;
 
 	public Integer getId() {
 		return id;
@@ -123,18 +114,11 @@ public class PrescriptionDto {
 		this.amountLabel = amountLabel;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
-	}		
-	
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
-	}
-			
+	}			
 }
