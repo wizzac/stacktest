@@ -40,12 +40,12 @@ public class PersonMedicineTreatmentTest {
 
 		PersonMedicationTreatmentDto dto = new PersonMedicationTreatmentDto();
 
-		dto.setBrand("Marca medicamento 2");
-		dto.setLot("Lote medicamento 2");
+		dto.setBrand("Marca medicamento 3");
+		dto.setLot("Lote medicamento 3");
 		dto.setDateSupply(new Date());
 		dto.setExternalMedicationCode("0000000000000000000000002");
-		dto.setIndications("Unas indicaciones actualizadas 2");
-		dto.setObservations("Unas Observaciones Actualizadas 2");
+		dto.setIndications("Unas indicaciones actualizadas 3");
+		dto.setObservations("Unas Observaciones Actualizadas 3");
 
 		dto.setMedicationTreatmentType(new LookupValueDto());
 		dto.getMedicationTreatmentType().setCode("DRUG_PER_OS");
