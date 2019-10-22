@@ -3,6 +3,9 @@ package com.stacktest.hcd;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,6 +20,7 @@ import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,6 +30,8 @@ import org.springframework.hateoas.PagedResources;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.microsoft.sqlserver.jdbc.StringUtils;
+import com.stacktest.hcd.dto.AutentificacionDto;
 
 public class HCDConnection {
 	private String urlHost = "http://localhost:8080/saludServer";
@@ -44,12 +50,7 @@ public class HCDConnection {
 	public HCDConnection(String username, String password) {
 		parametros = new HashMap<>();
 		gBuilder = new GsonBuilder().setDateFormat("dd-MM-yyyy HH:mm:ss");
-
-		UserPassDTO upDto = new UserPassDTO(username, password);
-		mjePost = gBuilder.create().toJson(upDto);
-		ResLoginDTO[] dto = ejecutar("GET", "/token/login/temporal", ResLoginDTO[].class);
-		token = dto[0].authToken.token;
-		mjePost = null;
+		autentificar(username, password);
 	}
 
 	public void setHost(String url) {
@@ -146,6 +147,85 @@ public class HCDConnection {
 		}
 
 		return res;
+	}
+
+	private String resourceFileName = "application.properties";
+	private String AutentificacionesFileName = "autentificaciones.json";
+
+	private void autentificar(String username, String password) {
+		try {
+			int nroDocumento = Integer.parseInt(username.substring(0, username.length() - 1));
+			boolean isMasculino = username.substring(username.length() - 1, username.length()).equalsIgnoreCase("M");
+
+			String pathFile = getClass().getClassLoader().getResource(resourceFileName).getFile()
+					.replace(resourceFileName, AutentificacionesFileName);
+
+			File file = new File(pathFile);
+
+			if (!file.exists())
+				file.createNewFile();
+
+			FileReader reader = new FileReader(file);
+			BufferedReader br = new BufferedReader(reader);
+
+			String json = StringUtils.EMPTY;
+			String line;
+			while ((line = br.readLine()) != null)
+				json += line;
+
+			br.close();
+
+			AutentificacionDto[] autentificaciones = new Gson().fromJson(json, AutentificacionDto[].class);
+			List<AutentificacionDto> lista = new ArrayList<>();
+
+			AutentificacionDto dto = null;
+
+			if (autentificaciones != null) {
+				for (int i = 0; i < autentificaciones.length; i++) {
+					if (autentificaciones[i].getNroDocumento() == nroDocumento)
+						dto = autentificaciones[i];
+
+					lista.add(autentificaciones[i]);
+				}
+			}
+
+			// Valido que exista yque la diferencia en tiempo es menor igual a 4hs
+			if (dto != null && (new Date().getTime() - dto.getFecha().getTime()) <= (4 * 60 * 60 * 1000)) {
+				token = dto.getBearer();
+			} else {
+				actualizarToken(username, password);
+
+				if (dto != null)
+					lista.remove(dto);
+
+				dto = new AutentificacionDto();
+				dto.setBearer(token);
+				dto.setFecha(new Date());
+				dto.setMasculino(isMasculino);
+				dto.setNroDocumento(nroDocumento);
+
+				lista.add(dto);
+
+				json = new Gson().toJson(lista);
+
+				FileOutputStream outputStream = new FileOutputStream(pathFile);
+				byte[] strToBytes = json.getBytes();
+				outputStream.write(strToBytes);
+
+				outputStream.close();
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			assert false;
+		}
+	}
+
+	private void actualizarToken(String username, String password) {
+		UserPassDTO upDto = new UserPassDTO(username, password);
+		mjePost = gBuilder.create().toJson(upDto);
+		ResLoginDTO[] dto = ejecutar("GET", "/token/login/temporal", ResLoginDTO[].class);
+		token = dto[0].authToken.token;
+		mjePost = null;
 	}
 
 	public <T> T ejecutarForPagedResources(String method, String urlPart, Class<T> itemType) {

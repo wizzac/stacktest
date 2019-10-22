@@ -10,6 +10,8 @@ public class PersonMedicationTreatmentDto {
 
 	private String externalMedicationCode;
 
+	private String externalMedicationDesc;
+
 	private PersonBaseDto person;
 
 	private PrescriptionDto prescription;	
@@ -52,6 +54,14 @@ public class PersonMedicationTreatmentDto {
 
 	public void setExternalMedicationCode(String externalMedicationCode) {
 		this.externalMedicationCode = externalMedicationCode;
+	}
+
+	public String getExternalMedicationDesc() {
+		return externalMedicationDesc;
+	}
+
+	public void setExternalMedicationDesc(String externalMedicationDesc) {
+		this.externalMedicationDesc = externalMedicationDesc;
 	}
 
 	public PersonBaseDto getPerson() {
