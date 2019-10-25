@@ -4,22 +4,21 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.stacktest.hcd.dto.ConsultationDto;
-import com.stacktest.hcd.dto.HealthCenterDto;
 import com.stacktest.hcd.dto.LookupValueDto;
 import com.stacktest.hcd.dto.PersonBaseDto;
 import com.stacktest.hcd.dto.PersonMedicationTreatmentDto;
+import com.stacktest.hcd.dto.PrescriptionDto;
 
 public class PersonMedicineTreatmentTest {
 	int patientId = 449;
-	int consultationId = 259;
+	int consultationId = 75069;
 	int prescriptionId = 1431;
-	int personHasMedTreatId = 1;
+	int personHasMedTreatId = 4;
 
 	@Test
 	public void getPersonMedicineTreatmentsByPersonId() {
 		HCDConnection con = new HCDConnection("1M", "1234");
-		PersonMedicationTreatmentDto[] dto = con.ejecutar("GET", "/secure/medicinetreatment/person/" + patientId,
+		PersonMedicationTreatmentDto[] dto = con.ejecutar("GET", "/secure/mobile/healthCenter/22/patient/" + patientId + "/medicationtreatment",
 				PersonMedicationTreatmentDto[].class);
 
 		assert dto != null;
@@ -29,7 +28,16 @@ public class PersonMedicineTreatmentTest {
 	public void getPersonMedicineTreatmentsByConsultationId() {
 		HCDConnection con = new HCDConnection("1M", "1234");
 		PersonMedicationTreatmentDto[] dto = con.ejecutar("GET",
-				"/secure/medicinetreatment/consultation/" + consultationId, PersonMedicationTreatmentDto[].class);
+				"/secure/healthCenter/22/consultation/" + consultationId + "/medicationtreatment", PersonMedicationTreatmentDto[].class);
+
+		assert dto != null;
+	}
+
+	@Test
+	public void getPersonMedicineTreatmentsTypes() {
+		HCDConnection con = new HCDConnection("1M", "1234");
+		Object[] dto = con.ejecutar("GET",
+				"/secure/mobile/healthCenter/22/medicationtreatment/types", Object[].class);
 
 		assert dto != null;
 	}
@@ -40,30 +48,34 @@ public class PersonMedicineTreatmentTest {
 
 		PersonMedicationTreatmentDto dto = new PersonMedicationTreatmentDto();
 
-		dto.setBrand("Marca medicamento 3");
-		dto.setLot("Lote medicamento 3");
+		dto.setBrand("Marca medicamento TEST");
+		dto.setLot("Lote medicamento TEST");
 		dto.setDateSupply(new Date());
-		dto.setExternalMedicationCode("0000000000000000000000002");
-		dto.setIndications("Unas indicaciones actualizadas 3");
-		dto.setObservations("Unas Observaciones Actualizadas 3");
+		dto.setExternalMedicationCode("9934361000999111");
+		dto.setExternalMedicationDesc("KETOROLAC FABRA 30MG INY. X 1");
+		dto.setIndications("Unas indicaciones TEST");
+		dto.setObservations("Unas Observaciones TEST");
 
 		dto.setMedicationTreatmentType(new LookupValueDto());
-		dto.getMedicationTreatmentType().setCode("DRUG_PER_OS");
+		dto.getMedicationTreatmentType().setCode("DRUG_INJECTION_INTRAVENOUS");
 
-		dto.setConsultation(new ConsultationDto());
-		dto.getConsultation().setId(consultationId);
-
-		dto.setHealthCenter(new HealthCenterDto());
-		dto.getHealthCenter().setId(22);
-
-//		dto.setPrescription(new PrescriptionDto());
-//		dto.getPrescription().setId(prescriptionId);
+		dto.setPrescription(new PrescriptionDto());
+		dto.getPrescription().setId(prescriptionId);
 
 		dto.setPerson(new PersonBaseDto());
 		dto.getPerson().setId(patientId);
 
 		con.setMensajePost(dto);
-		dto = con.ejecutar("POST", "/secure/medicinetreatment/", PersonMedicationTreatmentDto.class);
+		dto = con.ejecutar("POST", "/secure/healthCenter/22/consultation/" + consultationId + "/medicationtreatment", PersonMedicationTreatmentDto.class);
+
+		assert dto != null;
+	}
+
+	@Test
+	public void deletePersonMedicineTreatment() {
+		HCDConnection con = new HCDConnection("1M", "1234");
+		PersonMedicationTreatmentDto dto = con.ejecutar("DELETE",
+				"/secure/healthCenter/22/consultation/" + consultationId + "/medicationtreatment/" + personHasMedTreatId, PersonMedicationTreatmentDto.class);
 
 		assert dto != null;
 	}

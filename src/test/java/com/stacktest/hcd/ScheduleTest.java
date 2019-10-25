@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import com.stacktest.hcd.mobile.dto.ScheduleSimpleDto;
 
-public class ScheduleActionStatusTest {
+public class ScheduleTest {
 	private int idScheduleAdmin = 295561;
 	private int idScheduleCuk = 295561;
 	private int idSchedulePacheco = 295580;

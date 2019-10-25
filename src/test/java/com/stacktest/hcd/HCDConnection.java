@@ -34,8 +34,8 @@ import com.microsoft.sqlserver.jdbc.StringUtils;
 import com.stacktest.hcd.dto.AutentificacionDto;
 
 public class HCDConnection {
-	private String urlHost = "http://localhost:8080/saludServer";
-	// private String urlHost = "http://64.215.200.200:8080/saludServer";
+	// private String urlHost = "http://localhost:8080/saludServer";
+	private String urlHost = "http://64.215.200.200:8080/saludServer";
 	// private String urlHost = "http://192.168.10.92:8080/saludServer";
 	// private String urlHost = "http://192.168.0.104:8080/saludServer";
 
@@ -149,16 +149,13 @@ public class HCDConnection {
 		return res;
 	}
 
-	private String resourceFileName = "application.properties";
-	private String AutentificacionesFileName = "autentificaciones.json";
-
 	private void autentificar(String username, String password) {
 		try {
 			int nroDocumento = Integer.parseInt(username.substring(0, username.length() - 1));
 			boolean isMasculino = username.substring(username.length() - 1, username.length()).equalsIgnoreCase("M");
 
-			String pathFile = getClass().getClassLoader().getResource(resourceFileName).getFile()
-					.replace(resourceFileName, AutentificacionesFileName);
+			String pathFile = getClass().getClassLoader().getResource("application.properties").getFile()
+					.replace("application.properties", "autentificaciones.json");
 
 			File file = new File(pathFile);
 
