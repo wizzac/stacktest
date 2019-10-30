@@ -7,6 +7,7 @@ public class AutentificacionDto {
 	private boolean masculino;
 	private String bearer;
 	private Date fecha;
+	private String host;
 
 	public int getNroDocumento() {
 		return nroDocumento;
@@ -38,5 +39,13 @@ public class AutentificacionDto {
 
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
 	}
 }

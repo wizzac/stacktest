@@ -6,36 +6,20 @@ import com.stacktest.hcd.dto.PersonTriageDto;
 import com.stacktest.hcd.dto.PersonTriageTypeDto;
 
 public class PatientTriageTest {
-	private int idConsultation = 259;
+	private int idConsultation = 75093;
 
 	@Test
-	public void createPatientTriage() {
-		HCDConnection con = new HCDConnection("1M", "1234");
+	public void createUpdatePatientTriage() {
+		HCDConnection con = new HCDConnection("32811727M", "1234");
 
 		PersonTriageDto dto = new PersonTriageDto();
-		dto.setLevel(2);
-		dto.setObservation("Observacion de TEST");
+		dto.setLevel(1);
+		dto.setObservation("Observacion de TEST para la consulta " + idConsultation);
 
 		con.setMensajePost(dto);
 		PersonTriageDto resp = con.ejecutar("POST",
-				"/secure/healthCenter/22/consultation/" + idConsultation + "/patienttriage", PersonTriageDto.class);
-		
-		assert resp != null;
-	}
+				"/secure/healthCenter/15/consultation/" + idConsultation + "/patienttriage", PersonTriageDto.class);
 
-	@Test
-	public void updatePatientTriage() {
-		HCDConnection con = new HCDConnection("1M", "1234");
-
-		PersonTriageDto dto = new PersonTriageDto();
-		dto.setId(1);
-		dto.setLevel(3);
-		dto.setObservation("Observacion actualizada de TEST");
-
-		con.setMensajePost(dto);
-		PersonTriageDto resp = con.ejecutar("PUT",
-				"/secure/healthCenter/22/consultation/" + idConsultation + "/patienttriage", PersonTriageDto.class);
-		
 		assert resp != null;
 	}
 
@@ -43,9 +27,9 @@ public class PatientTriageTest {
 	public void getPatientTriageTypes() {
 		HCDConnection con = new HCDConnection("1M", "1234");
 
-		PersonTriageTypeDto[] resp = con.ejecutar("GET",
-				"/secure/healthCenter/22/patienttriage/types", PersonTriageTypeDto[].class);
-		
+		PersonTriageTypeDto[] resp = con.ejecutar("GET", "/secure/healthCenter/22/patienttriage/types",
+				PersonTriageTypeDto[].class);
+
 		assert resp != null;
 	}
 }

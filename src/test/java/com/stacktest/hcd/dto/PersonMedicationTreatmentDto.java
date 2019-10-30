@@ -8,9 +8,9 @@ public class PersonMedicationTreatmentDto {
 
 	private LookupValueDto medicationTreatmentType;
 
-	private String externalMedicationCode;
+	private String medicationCode;
 
-	private String externalMedicationDesc;
+	private String medicationDesc;
 
 	private PersonBaseDto person;
 
@@ -48,20 +48,20 @@ public class PersonMedicationTreatmentDto {
 		this.medicationTreatmentType = medicationTreatmentType;
 	}
 
-	public String getExternalMedicationCode() {
-		return externalMedicationCode;
+	public String getMedicationCode() {
+		return medicationCode;
 	}
 
-	public void setExternalMedicationCode(String externalMedicationCode) {
-		this.externalMedicationCode = externalMedicationCode;
+	public void setMedicationCode(String medicationCode) {
+		this.medicationCode = medicationCode;
 	}
 
-	public String getExternalMedicationDesc() {
-		return externalMedicationDesc;
+	public String getMedicationDesc() {
+		return medicationDesc;
 	}
 
-	public void setExternalMedicationDesc(String externalMedicationDesc) {
-		this.externalMedicationDesc = externalMedicationDesc;
+	public void setMedicationDesc(String medicationDesc) {
+		this.medicationDesc = medicationDesc;
 	}
 
 	public PersonBaseDto getPerson() {

@@ -1,13 +1,7 @@
 package com.stacktest.hcd.dto;
 
-import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.stacktest.hcd.dto.servicesDisplay.ScheduleDto;
 
 public class ConsultationDto {
@@ -24,27 +18,23 @@ public class ConsultationDto {
 	
 	private String bodySurface;
 
-	private Integer breathingFrecuency;
+	private String breathingFrecuency;
 	
-	@JsonInclude(value= JsonInclude.Include.NON_EMPTY)    
-    @JsonProperty("endTime")	
-	private Date endTime;
+	private String endTime;
 	
 	private String familyBackground;
 
 	private String personalBackground;
 	
-	private Integer heartRate;
+	private String heartRate;
 
-	private Integer height;
+	private String height;
 	
 	private String previousTreatment;
 
 	private String reason;
 
-	@JsonInclude(value= JsonInclude.Include.NON_EMPTY)    
-    @JsonProperty("startTime")	
-	private Date startTime;
+	private String startTime;
 	
 	private String symptom;
 
@@ -54,7 +44,7 @@ public class ConsultationDto {
 
 	private String brainRadio;
 
-	private Integer monthsAge;
+	private String monthsAge;
 		
 	private HealthCenterDto healthCenter;
 	
@@ -77,6 +67,8 @@ public class ConsultationDto {
 	private List<ExaminationOphthalmologyDto> examinationOphthalmologyDtos;
 	
 	private List<ExaminationValueDto> examinationValues;
+	
+	private List<PersonMedicationTreatmentDto> personMedicationsTreatments;
 
 	public Integer getId() {
 		return id;
@@ -118,7 +110,6 @@ public class ConsultationDto {
 		this.bodyMass = bodyMass;
 	}
 
-	
 	public String getBodySurface() {
 		return bodySurface;
 	}
@@ -127,19 +118,19 @@ public class ConsultationDto {
 		this.bodySurface = bodySurface;
 	}
 
-	public Integer getBreathingFrecuency() {
+	public String getBreathingFrecuency() {
 		return breathingFrecuency;
 	}
 
-	public void setBreathingFrecuency(Integer breathingFrecuency) {
+	public void setBreathingFrecuency(String breathingFrecuency) {
 		this.breathingFrecuency = breathingFrecuency;
 	}
 
-	public Date getEndTime() {
+	public String getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Date endTime) {
+	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
 
@@ -159,19 +150,19 @@ public class ConsultationDto {
 		this.personalBackground = personalBackground;
 	}
 
-	public Integer getHeartRate() {
+	public String getHeartRate() {
 		return heartRate;
 	}
 
-	public void setHeartRate(Integer heartRate) {
+	public void setHeartRate(String heartRate) {
 		this.heartRate = heartRate;
 	}
 
-	public Integer getHeight() {
+	public String getHeight() {
 		return height;
 	}
 
-	public void setHeight(Integer height) {
+	public void setHeight(String height) {
 		this.height = height;
 	}
 
@@ -191,11 +182,11 @@ public class ConsultationDto {
 		this.reason = reason;
 	}
 
-	public Date getStartTime() {
+	public String getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Date startTime) {
+	public void setStartTime(String startTime) {
 		this.startTime = startTime;
 	}
 
@@ -231,12 +222,36 @@ public class ConsultationDto {
 		this.brainRadio = brainRadio;
 	}
 
-	public Integer getMonthsAge() {
+	public String getMonthsAge() {
 		return monthsAge;
 	}
 
-	public void setMonthsAge(Integer monthsAge) {
+	public void setMonthsAge(String monthsAge) {
 		this.monthsAge = monthsAge;
+	}
+
+	public HealthCenterDto getHealthCenter() {
+		return healthCenter;
+	}
+
+	public void setHealthCenter(HealthCenterDto healthCenter) {
+		this.healthCenter = healthCenter;
+	}
+
+	public ServiceDto getService() {
+		return service;
+	}
+
+	public void setService(ServiceDto service) {
+		this.service = service;
+	}
+
+	public SpecialtyDto getSpecialty() {
+		return specialty;
+	}
+
+	public void setSpecialty(SpecialtyDto specialty) {
+		this.specialty = specialty;
 	}
 
 	public ScheduleDto getSchedule() {
@@ -303,32 +318,11 @@ public class ConsultationDto {
 		this.examinationValues = examinationValues;
 	}
 
-	public HealthCenterDto getHealthCenter() {
-		return healthCenter;
+	public List<PersonMedicationTreatmentDto> getPersonMedicationsTreatments() {
+		return personMedicationsTreatments;
 	}
 
-	public void setHealthCenter(HealthCenterDto healthCenter) {
-		this.healthCenter = healthCenter;
-	}
-
-	public ServiceDto getService() {
-		return service;
-	}
-
-	public void setService(ServiceDto service) {
-		this.service = service;
-	}
-
-	public SpecialtyDto getSpecialty() {
-		return specialty;
-	}
-
-	public void setSpecialty(SpecialtyDto specialty) {
-		this.specialty = specialty;
-	}
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+	public void setPersonMedicationsTreatments(List<PersonMedicationTreatmentDto> personMedicationsTreatments) {
+		this.personMedicationsTreatments = personMedicationsTreatments;
 	}
 }

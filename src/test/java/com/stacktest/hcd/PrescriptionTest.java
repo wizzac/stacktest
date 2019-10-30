@@ -10,7 +10,7 @@ public class PrescriptionTest {
 	@Test
 	public void getLastActivePrescriptionsPatient() {
 		HCDConnection con = new HCDConnection("1M", "1234");
-		PrescriptionDto[] dto = con.ejecutar("GET", "/secure/healthCenter/22/prescription/active/patient/" + patientId,
+		PrescriptionDto[] dto = con.ejecutar("GET", "/secure/healthCenter/22/patient/" + patientId + "/prescription",
 				PrescriptionDto[].class);
 		assert dto != null;
 	}

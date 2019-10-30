@@ -19,4 +19,11 @@ public class PendingPersonTest {
 				ScheduleSimpleDto[].class);
 		assert dtos != null;
 	}
+
+	@Test
+	public void getAttendAppointments() {
+		HCDConnection con = new HCDConnection("32811727M", "1234");
+		Object dtos = con.ejecutar("GET", "/secure/healthCenter/22/appointment/attend", Object.class);
+		assert dtos != null;
+	}
 }
