@@ -1,16 +1,16 @@
 package com.stacktest.hcd;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import org.junit.Test;
 
 import com.stacktest.hcd.dto.LookupValueDto;
 import com.stacktest.hcd.dto.PersonMedicationTreatmentDto;
-import com.stacktest.hcd.dto.PrescriptionDto;
 
 public class PersonMedicineTreatmentTest {
 	int patientId = 86751;
-	int consultationId = 93378;
+	int consultationId = 75100;
 	int prescriptionId = 1431;
 	int personHasMedTreatId = 15;
 
@@ -42,28 +42,27 @@ public class PersonMedicineTreatmentTest {
 	}
 
 	@Test
-	@SuppressWarnings("deprecation")
-	public void createPersonMedicineTreatment() {
-		HCDConnection con = new HCDConnection("23483889F", "1234");
+	public void createPersonMedicineTreatment() throws ParseException {
+		HCDConnection con = new HCDConnection("32811727M", "1234");
 
 		PersonMedicationTreatmentDto dto = new PersonMedicationTreatmentDto();
 
-		dto.setBrand("Marca medicamento TEST");
-		dto.setLot("Lote medicamento TEST");
-		dto.setDateSupply(new Date("08/10/2019 10:10:00"));
+		dto.setBrand(null);
+		dto.setLot(null);
+		dto.setDateSupply(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2019-10-31 19:10:00"));
 		dto.setMedicationCode("35953031000999113");
 		dto.setMedicationDesc("KETOROLAC FABRA 30MG INY. X 1");
-		dto.setIndications("Unas indicaciones TEST");
-		dto.setObservations("Unas Observaciones TEST");
+		dto.setIndications(null);
+		dto.setObservations(null);
 
 		dto.setMedicationTreatmentType(new LookupValueDto());
 		dto.getMedicationTreatmentType().setCode("DRUG_INJECTION_INTRAVENOUS");
 
-		dto.setPrescription(new PrescriptionDto());
-		dto.getPrescription().setId(prescriptionId);
+		//dto.setPrescription(new PrescriptionDto());
+		//dto.getPrescription().setId(prescriptionId);
 
 		con.setMensajePost(dto);
-		dto = con.ejecutar("POST", "/secure/healthCenter/15/consultation/" + consultationId + "/medicationtreatment", PersonMedicationTreatmentDto.class);
+		dto = con.ejecutar("POST", "/secure/healthCenter/22/consultation/" + consultationId + "/medicationtreatment", PersonMedicationTreatmentDto.class);
 
 		assert dto != null;
 	}
