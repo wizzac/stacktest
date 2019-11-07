@@ -5,8 +5,8 @@ import org.junit.Test;
 import com.stacktest.hcd.dto.WsHospitalItalianoBaseDto;
 
 public class ExternalWSTest {
-	String diagnosisSearch = "alergia";
-	String medicineSearch = "keterolac";
+	String diagnosisSearch = "hta";
+	String medicineSearch = "KETOROLAC";
 
 	@Test
 	public void getDiagnosisNomenclatureDtos() {

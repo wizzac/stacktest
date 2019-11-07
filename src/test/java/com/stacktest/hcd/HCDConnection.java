@@ -284,7 +284,7 @@ public class HCDConnection {
 		// Si hay mensaje post se lo agrego
 		if (mjePost != null) {
 			DataOutputStream wr = new DataOutputStream(res.getOutputStream());
-			wr.writeBytes(mjePost);
+			wr.write(mjePost.getBytes(codificacion));
 			wr.flush();
 			wr.close();
 		}
