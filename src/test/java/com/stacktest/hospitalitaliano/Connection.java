@@ -44,8 +44,12 @@ public class Connection {
 
 		try {
 			// Genero los datos de conexión
-			conn = crearConexion(urlHost + urlPart);
+			conn = crearConexion(urlHost + urlPart);									
 			conn.connect();
+
+			String respHeaders = "";
+			for (int i = 0; i < conn.getHeaderFields().size(); i++) 
+				respHeaders += conn.getHeaderField(i) + "\n";			
 
 			// Obtengo la respuesta
 			InputStream in = new BufferedInputStream(conn.getInputStream());
