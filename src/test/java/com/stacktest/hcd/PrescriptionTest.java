@@ -14,4 +14,16 @@ public class PrescriptionTest {
 				PrescriptionDto[].class);
 		assert dto != null;
 	}
+	
+	@Test
+	public void getGenericByCommecialPatient() {
+		HCDConnection con = new HCDConnection("1M", "1234");
+		
+		con.agregarParametroGet("code", "10124421000999114");
+		con.agregarParametroGet("consultationId", "125776");
+		//con.agregarParametroGet("internmentId", internmentId);
+		Object dto = con.ejecutar("GET", "/secure/healthCenter/23/vademecum/genericBycommercial",
+				Object.class);
+		assert dto != null;
+	}
 }
