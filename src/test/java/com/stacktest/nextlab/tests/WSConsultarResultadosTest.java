@@ -16,7 +16,7 @@ import com.stacktest.nextlab.soap.ResponseConsultarResultados;
 public class WSConsultarResultadosTest {
 
 	private String token = "nlsvctok";
-	private int prescriptionId = 99032361;
+	private int prescriptionId = 99032365;
 
 	private NextlabWSSoap getClient() {
 		NextlabWSSoap res = null;

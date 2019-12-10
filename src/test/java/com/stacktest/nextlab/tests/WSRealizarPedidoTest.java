@@ -31,6 +31,7 @@ import com.stacktest.nextlab.soap.ResponseRealizarPedido;
 public class WSRealizarPedidoTest {
 
 	private String token = "nlsvctok";
+	private int prescriptionId = 1;
 
 	private NextlabWSSoap getClient() {
 		NextlabWSSoap res = null;
@@ -89,7 +90,7 @@ public class WSRealizarPedidoTest {
 
 	private ReqPedido crearReqPedido() throws DatatypeConfigurationException {
 		ReqPedido pedido = new ReqPedido();
-		pedido.setNumero("0000001"); // Id consulta
+		pedido.setNumero(String.valueOf(prescriptionId)); // Id de la prescripción
 
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(new Date());
