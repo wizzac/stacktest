@@ -28,7 +28,7 @@ import com.stacktest.nextlab.soap.ReqPeticion;
 import com.stacktest.nextlab.soap.ReqServicio;
 import com.stacktest.nextlab.soap.ResponseRealizarPedido;
 
-public class WSRealizarPedidoTest {
+public class SoapRealizarPedidoTest {
 
 	private String token = "nlsvctok";
 	private int prescriptionId = 1;

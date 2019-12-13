@@ -16,7 +16,7 @@ public class TeminosExactosTest {
 	public void getDiagnosticoTest() {
 		Connection con = new Connection();
 		SolicitudDto request = new SolicitudDto();
-		request.setTexto("hta");
+		request.setTexto("Esguince del ligamento lateral interno de la rodilla");
 		request.setSubset(new ArrayList<>());
 		request.getSubset().add(diagnosticoSubset);
 		request.setMetodo("prefix");

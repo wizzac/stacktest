@@ -13,7 +13,7 @@ import com.stacktest.nextlab.soap.NextlabWS;
 import com.stacktest.nextlab.soap.NextlabWSSoap;
 import com.stacktest.nextlab.soap.ResponseConsultarResultados;
 
-public class WSConsultarResultadosTest {
+public class SoapConsultarResultadosTest {
 
 	private String token = "nlsvctok";
 	private int prescriptionId = 99032365;

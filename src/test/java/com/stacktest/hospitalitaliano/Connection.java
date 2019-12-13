@@ -23,6 +23,7 @@ import com.google.gson.JsonSyntaxException;
 
 public class Connection {
 	private String urlHost = "https://www.hospitalitaliano.org.ar/Hiba-RestApiTest";
+	//private String urlHost = "https://www.hospitalitaliano.org.ar/Hiba-RestApi";
 	private String identificacion = "50261000999133";
 	private String usuario = "";
 
