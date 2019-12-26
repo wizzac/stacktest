@@ -11,6 +11,21 @@ public class TeminosExactosTest {
 	private String estudioSubset = "631000999139";
 	private String estudioGeneralSubset = "20761000999138";
 	private String medicinaSubset = "35001000999130";
+	private String alergiasSubset = "1221000999135";
+
+	@Test
+	public void getAlergiaTest() {
+		Connection con = new Connection();
+		SolicitudDto request = new SolicitudDto();
+		request.setTexto("alimentos");
+		request.setSubset(new ArrayList<>());
+		request.getSubset().add(alergiasSubset);
+		request.setMetodo("prefix");
+		
+		con.setMensajePost(request);
+		RespuestaDto response = con.ejecutar(url, RespuestaDto.class);
+		assert response != null;
+	}
 
 	@Test
 	public void getDiagnosticoTest() {

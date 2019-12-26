@@ -16,8 +16,8 @@ public class RestNotifyTest {
 	private String token = "nlsvctok";
 	private int prescriptionId = 62573;
 	private String analysisCode = "108";
-	private String analysisSubsetId = "11227171000999117";
-	private String analysisStatus = "OK";
+	private String analysisHibaCode = "11227171000999117";
+	private String analysisStatus = "SM";
 
 	@Test
 	public void enviarNotificacionTest() throws DatatypeConfigurationException, ParseException {
@@ -26,14 +26,22 @@ public class RestNotifyTest {
 		nDto.setToken(token);
 		nDto.setNumber(String.valueOf(prescriptionId));
 		nDto.setBase64Pdf(getBase64PdfSample());
-		
+
 		nDto.setAnalyses(new ArrayList<AnalysisDto>());
 		AnalysisDto aDto = new AnalysisDto();
 		aDto.setCode(analysisCode);
-		aDto.setHibaSubsetId(analysisSubsetId);
+		aDto.setHibaCode(analysisHibaCode);
 		aDto.setStatus(analysisStatus);
 		aDto.setDescription("Resultado completado sin alertas");
 		nDto.getAnalyses().add(aDto);
+		
+		nDto.setAnalyses(new ArrayList<AnalysisDto>());
+		AnalysisDto aDto2 = new AnalysisDto();
+		aDto2.setCode(analysisCode);
+		aDto2.setHibaCode(analysisHibaCode);
+		aDto2.setStatus(analysisStatus);
+		aDto2.setDescription("Resultado completado sin alertas");
+		nDto.getAnalyses().add(aDto2);
 
 		aDto.setResults(new ArrayList<ResultDto>());
 		ResultDto rDto = new ResultDto();

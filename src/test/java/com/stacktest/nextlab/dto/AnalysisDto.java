@@ -5,7 +5,7 @@ import java.util.List;
 
 public class AnalysisDto {
 	private String code;
-	private String hibaSubsetId;
+	private String hibaCode;
 	private String status;
 	private String description;
 	private List<ResultDto> results;
@@ -18,12 +18,12 @@ public class AnalysisDto {
 		this.code = code;
 	}
 
-	public String getHibaSubsetId() {
-		return hibaSubsetId;
+	public String getHibaCode() {
+		return hibaCode;
 	}
 
-	public void setHibaSubsetId(String hibaSubsetId) {
-		this.hibaSubsetId = hibaSubsetId;
+	public void setHibaCode(String hibaCode) {
+		this.hibaCode = hibaCode;
 	}
 
 	public String getStatus() {
