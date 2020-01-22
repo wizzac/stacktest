@@ -3,7 +3,7 @@ package com.stacktest.hcd.mobile;
 import org.junit.Test;
 
 import com.stacktest.hcd.HCDConnection;
-import com.stacktest.hcd.mobile.dto.ScheduleSimpleDto;
+import com.stacktest.hcd.dto.ScheduleSimpleDto;
 
 public class ScheduleTest {
 	public int serviceId = 2720;

@@ -4,10 +4,10 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.stacktest.hcd.mobile.dto.PersonDto;
-import com.stacktest.hcd.mobile.dto.ProfessionalMinDto;
-import com.stacktest.hcd.mobile.dto.ScheduleSimpleDto;
-import com.stacktest.hcd.mobile.dto.ServiceMinDto;
+import com.stacktest.hcd.dto.PersonDto;
+import com.stacktest.hcd.dto.ProfessionalMinDto;
+import com.stacktest.hcd.dto.ScheduleSimpleDto;
+import com.stacktest.hcd.dto.ServiceMinDto;
 
 public class ScheduleAppointTest {
 	public int idPersonPatient = 13;

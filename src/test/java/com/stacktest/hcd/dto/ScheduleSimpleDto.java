@@ -1,6 +1,4 @@
-package com.stacktest.hcd.mobile.dto;
-
-import com.stacktest.hcd.dto.MessageOperatorDto;
+package com.stacktest.hcd.dto;
 
 public class ScheduleSimpleDto extends ScheduleBaseDto {
 	private ServiceMinDto service;

@@ -26,7 +26,7 @@ public class PersonDto {
 
 	private Integer daysOld;
 	
-	private String documentType;
+	private Object documentType;
 	
 	private String docNumber;
 
@@ -118,11 +118,11 @@ public class PersonDto {
 		this.daysOld = daysOld;
 	}
 
-	public String getDocumentType() {
+	public Object getDocumentType() {
 		return documentType;
 	}
 
-	public void setDocumentType(String documentType) {
+	public void setDocumentType(Object documentType) {
 		this.documentType = documentType;
 	}
 

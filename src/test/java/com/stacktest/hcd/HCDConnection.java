@@ -43,6 +43,7 @@ public class HCDConnection {
 	private HashMap<String, String> parametros;
 	private String jsonResponse;
 	private String method;
+	private String contentType = null;
 	private String mjePost;
 	private GsonBuilder gBuilder;
 	private String token;
@@ -67,6 +68,10 @@ public class HCDConnection {
 
 	public void setMethod(String method) {
 		this.method = method;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 
 	public void agregarParametroGet(String clave, String valor) {
@@ -114,6 +119,9 @@ public class HCDConnection {
 			}
 
 			res = gBuilder.create().fromJson(jsonResponse, type);
+
+			mjePost = null;
+			parametros = new HashMap<String, String>();
 		} catch (ConnectException e) {
 			e.printStackTrace();
 		} catch (SocketTimeoutException e) {
@@ -269,8 +277,13 @@ public class HCDConnection {
 
 		// Agrego las cabeceras
 		res.setRequestProperty("Accept-Charset", codificacion);
-		res.setRequestProperty("Content-type", "application/json");
 		res.setRequestProperty("Accept", "application/json, text/plain, */*");
+
+		if (contentType != null) {
+			res.setRequestProperty("Content-type", contentType);
+			contentType = null;
+		} else
+			res.setRequestProperty("Content-type", "application/json");
 
 		if (token != null)
 			res.setRequestProperty("X-Authorization", "Bearer " + token);

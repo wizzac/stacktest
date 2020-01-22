@@ -1,4 +1,4 @@
-package com.stacktest.hcd.mobile.dto;
+package com.stacktest.hcd.dto;
 
 public class ServiceMinDto {
 	public int id;

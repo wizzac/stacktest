@@ -1,6 +1,6 @@
-package com.stacktest.hcd.mobile.dto;
+package com.stacktest.hcd.dto;
 
-public class PersonDto {
+public class PersonSimpleDto {
 	private int id;
 	private String firstName;
 	private String lastName;

@@ -1,17 +1,25 @@
 package com.stacktest.hcd.dto;
 
+import java.util.Date;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.stacktest.hcd.config.ConstantConfig;
+
 public class PrescriptionDto {
 
 	private Integer id;
-	
+
 	private String status;
-	
+
 	private String statusLabel;
-	
+
 	private String amount;
-	
+
 	private String amountLabel;
-	
+
 	private LookupDto posology;
 
 	private Integer duration;
@@ -19,12 +27,38 @@ public class PrescriptionDto {
 	private Integer frecuency;
 
 	private Integer refill;
-	
+
 	private Integer refillValue;
 
+	private int refillInterval;
+
+	private boolean refillMonthly;
+
+	private boolean generatedByRefill;
+
 	private VademecumDto vademecum;
+
+	private String indications;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = ConstantConfig.SYSTEM_TIMEZONE)
+	private Date date;
+
+	private String professional;
+
+	private int applications;
+
+	private String closureReason;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = ConstantConfig.SYSTEM_TIMEZONE)
+	private Date closureDate;
+
+	private Integer closurePersonId;
+
+	private String closurePersonDesc;
+
+	private String closureStatus;
 	
-	private String date;
+	private boolean canFinalizeSuspend;
 
 	public Integer getId() {
 		return id;
@@ -32,7 +66,7 @@ public class PrescriptionDto {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}	
+	}
 
 	public String getStatus() {
 		return status;
@@ -40,8 +74,8 @@ public class PrescriptionDto {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}	
-	
+	}
+
 	public String getStatusLabel() {
 		return statusLabel;
 	}
@@ -90,6 +124,30 @@ public class PrescriptionDto {
 		this.refillValue = refillValue;
 	}
 
+	public int getRefillInterval() {
+		return refillInterval;
+	}
+
+	public void setRefillInterval(int refillInterval) {
+		this.refillInterval = refillInterval;
+	}
+
+	public boolean getRefillMonthly() {
+		return refillMonthly;
+	}
+
+	public void setRefillMonthly(boolean refillMonthly) {
+		this.refillMonthly = refillMonthly;
+	}
+
+	public boolean getGeneratedByRefill() {
+		return generatedByRefill;
+	}
+
+	public void setGeneratedByRefill(boolean generatedByRefill) {
+		this.generatedByRefill = generatedByRefill;
+	}
+
 	public VademecumDto getVademecum() {
 		return vademecum;
 	}
@@ -100,6 +158,14 @@ public class PrescriptionDto {
 
 	public LookupDto getPosology() {
 		return posology;
+	}
+
+	public String getIndications() {
+		return indications;
+	}
+
+	public void setIndications(String indications) {
+		this.indications = indications;
 	}
 
 	public void setPosology(LookupDto posology) {
@@ -114,11 +180,80 @@ public class PrescriptionDto {
 		this.amountLabel = amountLabel;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
-	}			
+	}
+
+	public String getProfessional() {
+		return professional;
+	}
+
+	public void setProfessional(String professional) {
+		this.professional = professional;
+	}
+
+	public int getApplications() {
+		return applications;
+	}
+
+	public void setApplications(int applications) {
+		this.applications = applications;
+	}
+
+	public String getClosureReason() {
+		return closureReason;
+	}
+
+	public void setClosureReason(String closureReason) {
+		this.closureReason = closureReason;
+	}
+
+	public Date getClosureDate() {
+		return closureDate;
+	}
+
+	public void setClosureDate(Date closureDate) {
+		this.closureDate = closureDate;
+	}
+
+	public Integer getClosurePersonId() {
+		return closurePersonId;
+	}
+
+	public void setClosurePersonId(Integer closurePersonId) {
+		this.closurePersonId = closurePersonId;
+	}
+
+	public String getClosurePersonDesc() {
+		return closurePersonDesc;
+	}
+
+	public void setClosurePersonDesc(String closurePersonDesc) {
+		this.closurePersonDesc = closurePersonDesc;
+	}
+
+	public String getClosureStatus() {
+		return closureStatus;
+	}
+
+	public void setClosureStatus(String closureStatus) {
+		this.closureStatus = closureStatus;
+	}
+
+	public boolean isCanFinalizeSuspend() {
+		return canFinalizeSuspend;
+	}
+
+	public void setCanFinalizeSuspend(boolean canFinalizeSuspend) {
+		this.canFinalizeSuspend = canFinalizeSuspend;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+	}
 }

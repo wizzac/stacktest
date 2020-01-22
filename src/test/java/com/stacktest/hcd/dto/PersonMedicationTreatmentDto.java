@@ -2,32 +2,29 @@ package com.stacktest.hcd.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.stacktest.hcd.config.ConstantConfig;
+
 public class PersonMedicationTreatmentDto {
-
 	private Integer id;
-
 	private LookupValueDto medicationTreatmentType;
-
 	private String medicationCode;
-
 	private String medicationDesc;
-
-	private PersonBaseDto person;
-
-	private PrescriptionDto prescription;	
-	
-	private HealthCenterDto healthCenter;
-		
-	private ConsultationDto consultation;
-
+	private IdNameDto person;
+	private PrescriptionDto prescription;
+	private IdNameDto healthCenter;
+	private IdNameDto consultation;
 	private String lot;
-
 	private String brand;
-
 	private String indications;
-
 	private String observations;
+	private boolean lastDose;
 
+	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
+	@JsonProperty("dateSupply")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = ConstantConfig.SYSTEM_TIMEZONE)
 	private Date dateSupply;
 
 	private String status;
@@ -64,11 +61,11 @@ public class PersonMedicationTreatmentDto {
 		this.medicationDesc = medicationDesc;
 	}
 
-	public PersonBaseDto getPerson() {
+	public IdNameDto getPerson() {
 		return person;
 	}
 
-	public void setPerson(PersonBaseDto person) {
+	public void setPerson(IdNameDto person) {
 		this.person = person;
 	}
 
@@ -80,19 +77,19 @@ public class PersonMedicationTreatmentDto {
 		this.prescription = prescription;
 	}
 
-	public HealthCenterDto getHealthCenter() {
+	public IdNameDto getHealthCenter() {
 		return healthCenter;
 	}
 
-	public void setHealthCenter(HealthCenterDto healthCenter) {
+	public void setHealthCenter(IdNameDto healthCenter) {
 		this.healthCenter = healthCenter;
 	}
 
-	public ConsultationDto getConsultation() {
+	public IdNameDto getConsultation() {
 		return consultation;
 	}
 
-	public void setConsultation(ConsultationDto consultation) {
+	public void setConsultation(IdNameDto consultation) {
 		this.consultation = consultation;
 	}
 
@@ -142,5 +139,13 @@ public class PersonMedicationTreatmentDto {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public boolean isLastDose() {
+		return lastDose;
+	}
+
+	public void setLastDose(boolean lastDose) {
+		this.lastDose = lastDose;
 	}
 }

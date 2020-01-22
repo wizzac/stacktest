@@ -195,6 +195,7 @@ public interface ConstantConfig {
 	public static final String PRESCRIPTION_STATUS_REQUEST = "REQ";
 	public static final String PRESCRIPTION_STATUS_REALIZED = "REA";
 	public static final String PRESCRIPTION_STATUS_COMPLETED = "FIN";
+	public static final String PRESCRIPTION_STATUS_SUSPENDED = "SUS";
 
 	public static final String PERMISSION_STATUS_BAJ = "BAJ";
 	public static final String PERMISSION_STATUS_ACT = "ACT";

@@ -2,7 +2,7 @@ package com.stacktest.hcd;
 
 import org.junit.Test;
 
-import com.stacktest.hcd.mobile.dto.ScheduleSimpleDto;
+import com.stacktest.hcd.dto.ScheduleSimpleDto;
 
 public class PendingPersonTest {
 	private int serviceId = 2783;

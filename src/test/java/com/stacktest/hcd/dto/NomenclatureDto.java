@@ -3,22 +3,26 @@ package com.stacktest.hcd.dto;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class VademecumDto {
+public class NomenclatureDto {
 
 	private Integer id;
 
-	private String code;		
+	private String code;
+
+	private String description;					
 	
-	private String description;
-		
-	private boolean isCommercial;
+	private String wsCode;
 	
-	public VademecumDto(){}
+	private String status;		
 	
-	public VademecumDto(Integer id, String code, String description) {		
+	public NomenclatureDto() {}
+
+	public NomenclatureDto(Integer id, String code,String status, String description, String wsCode) {		
 		this.id = id;
 		this.code = code;
+		this.status = status;
 		this.description = description;
+		this.wsCode = wsCode;
 	}
 
 	public Integer getId() {
@@ -45,17 +49,25 @@ public class VademecumDto {
 		this.description = description;
 	}
 
-	public boolean getIsCommercial() {
-		return isCommercial;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setIsCommercial(boolean isCommercial) {
-		this.isCommercial = isCommercial;
+	public void setStatus(String status) {
+		this.status = status;
 	}
-	
+
+	public String getWsCode() {
+		return wsCode;
+	}
+
+	public void setWsCode(String wsCode) {
+		this.wsCode = wsCode;
+	}	
+
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
 	}
-	
+		
 }
