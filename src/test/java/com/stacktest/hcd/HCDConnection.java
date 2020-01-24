@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.ConnectException;
@@ -20,9 +21,11 @@ import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.PagedResources;
@@ -239,14 +242,18 @@ public class HCDConnection {
 		mjePost = null;
 	}
 
-	public <T> T ejecutarForPagedResources(String method, String urlPart, Class<T> itemType) {
-		T res = null;
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public <T> PagedResources<T> ejecutarForPagedResources(String method, String urlPart, Class<T> itemType) {
+		PagedResources<T> res = null;
 		try {
 			Gson gson = gBuilder.create();
-			@SuppressWarnings("rawtypes")
 			PagedResources pr = ejecutar(method, urlPart, PagedResources.class);
+			
 			String json = gson.toJson(pr.getContent());
-			res = gson.fromJson(json, itemType);
+			Class<?> arrayItemType = Array.newInstance(itemType, 0).getClass();
+			List<T> list = Arrays.stream((T[]) gson.fromJson(json, arrayItemType)).collect(Collectors.toList());
+			res = new PagedResources<T>(list, pr.getMetadata(), pr.getLinks());
+			//res = new PageImpl<T>(list, pr.getPageable(), pr.getTotalElements());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -19,7 +19,7 @@ import com.stacktest.hcd.dto.SignatureDto;
 public class ConsultationTest {
 	HCDConnection con = new HCDConnection("32811727M", "1234");// Domene
 	private int idSchedule = 425254;
-	private int idConsultation = 128056;
+	private int idConsultation = 128063;
 	private int idHealthCenter = 23;// Domene
 	private int idService = 3004;// Domene
 	private int idProfessional = 557;// Domene

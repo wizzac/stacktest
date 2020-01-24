@@ -15,24 +15,24 @@ public class PrescriptionTest {
 	private int idHealthCenter = 23;// Domene
 	private int idPatient = 9;
 	private int idPrescription = 79377;
-	private int idConsultation = 128057;
-	private String codeVademecum = "10416841000999116";
-	private String descVademecum = "DICLOFENAC 25 MG CAPSULA";
+	private int idConsultation = 128063;
+	private String codeVademecum = "14013541000999116";
+	private String descVademecum = "IBUPROFENO 600 MG CAPSULA";
 
 	@Test
 	public void createPrescription() {
 		PrescriptionDto dto = new PrescriptionDto();
-		dto.setAmount("20");
+		dto.setAmount("15");
 		dto.setPosology(new LookupDto());
 		dto.getPosology().setId(2);
 		dto.getPosology().setName("Miligramos");
 		dto.getPosology().setCode("mg");
-		dto.setDuration(20);
-		dto.setFrecuency(20);
-//		dto.setRefill(1);
-//		dto.setRefillValue(4);
-//		dto.setRefillInterval(10);
-//		dto.setRefillMonthly(false);
+		dto.setDuration(15);
+		dto.setFrecuency(15);
+		dto.setRefill(1);
+		dto.setRefillValue(2);
+		dto.setRefillInterval(1);
+		dto.setRefillMonthly(true);
 		dto.setVademecum(new VademecumDto(null, codeVademecum, descVademecum));
 
 		con.setMensajePost(dto);
@@ -59,7 +59,7 @@ public class PrescriptionTest {
 	@Test
 		@SuppressWarnings("rawtypes")
 	public void getMedicinePrescriptionsPatient() {
-		//con.agregarParametroGet("status", "SUS");
+		con.agregarParametroGet("status", "SUS");
 		//con.agregarParametroGet("active_principle", "keto");
 		//con.agregarParametroGet("date_from", "2020-01-15");
 		//con.agregarParametroGet("date_to", "2020-01-15");
@@ -68,16 +68,6 @@ public class PrescriptionTest {
 				"/secure/healthCenter/" + idHealthCenter + "/patient/" + idPatient + "/medicineprescriptions",
 				PagedResources.class);
 		assert page != null;
-	}
-
-	@Test
-	public void getGenericByCommecialPatient() {
-		con.agregarParametroGet("code", "10124421000999114");
-		con.agregarParametroGet("consultationId", idConsultation);
-		// con.agregarParametroGet("internmentId", internmentId);
-		Object dto = con.ejecutar("GET", "/secure/healthCenter/" + idHealthCenter + "/vademecum/genericBycommercial",
-				Object.class);
-		assert dto != null;
 	}
 
 	@Test

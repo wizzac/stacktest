@@ -12,6 +12,7 @@ public class PersonMedicationTreatmentDto {
 	private LookupValueDto medicationTreatmentType;
 	private String medicationCode;
 	private String medicationDesc;
+	private IdNameDto professional;
 	private IdNameDto person;
 	private PrescriptionDto prescription;
 	private IdNameDto healthCenter;
@@ -59,6 +60,14 @@ public class PersonMedicationTreatmentDto {
 
 	public void setMedicationDesc(String medicationDesc) {
 		this.medicationDesc = medicationDesc;
+	}
+
+	public IdNameDto getProfessional() {
+		return professional;
+	}
+
+	public void setProfessional(IdNameDto professional) {
+		this.professional = professional;
 	}
 
 	public IdNameDto getPerson() {
