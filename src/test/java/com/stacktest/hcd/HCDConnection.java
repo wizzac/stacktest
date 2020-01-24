@@ -28,7 +28,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.PagedResources.PageMetadata;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -242,18 +244,16 @@ public class HCDConnection {
 		mjePost = null;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	public <T> PagedResources<T> ejecutarForPagedResources(String method, String urlPart, Class<T> itemType) {
 		PagedResources<T> res = null;
 		try {
 			Gson gson = gBuilder.create();
-			PagedResources pr = ejecutar(method, urlPart, PagedResources.class);
-			
+			PageResult pr = ejecutar(method, urlPart, PageResult.class);
 			String json = gson.toJson(pr.getContent());
 			Class<?> arrayItemType = Array.newInstance(itemType, 0).getClass();
 			List<T> list = Arrays.stream((T[]) gson.fromJson(json, arrayItemType)).collect(Collectors.toList());
-			res = new PagedResources<T>(list, pr.getMetadata(), pr.getLinks());
-			//res = new PageImpl<T>(list, pr.getPageable(), pr.getTotalElements());
+			res = new PagedResources<T>(list, pr.getPage(), pr.getLinks());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -363,5 +363,36 @@ public class HCDConnection {
 
 	public class AuthTokenDTO {
 		public String token;
+	}
+
+	public class PageResult {
+
+		private List<Link> links = null;
+		private List<Object> content = null;
+		private PageMetadata page;
+
+		public List<Link> getLinks() {
+			return links;
+		}
+
+		public void setLinks(List<Link> links) {
+			this.links = links;
+		}
+
+		public List<Object> getContent() {
+			return content;
+		}
+
+		public void setContent(List<Object> content) {
+			this.content = content;
+		}
+
+		public PageMetadata getPage() {
+			return page;
+		}
+
+		public void setPage(PageMetadata page) {
+			this.page = page;
+		}
 	}
 }
