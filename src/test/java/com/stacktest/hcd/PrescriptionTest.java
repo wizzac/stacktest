@@ -15,24 +15,26 @@ public class PrescriptionTest {
 	private int idHealthCenter = 23;// Domene
 	private int idPatient = 9;
 	private int idPrescription = 79377;
-	private int idConsultation = 128063;
+	private int idConsultation = 128093;
 	private String codeVademecum = "14013541000999116";
 	private String descVademecum = "IBUPROFENO 600 MG CAPSULA";
 
 	@Test
 	public void createPrescription() {
 		PrescriptionDto dto = new PrescriptionDto();
-		dto.setAmount("15");
+		dto.setAmount("30");
 		dto.setPosology(new LookupDto());
 		dto.getPosology().setId(2);
 		dto.getPosology().setName("Miligramos");
 		dto.getPosology().setCode("mg");
-		dto.setDuration(15);
-		dto.setFrecuency(15);
+		dto.setDuration(3);
+		dto.setDurationMonthly(true);
+		dto.setFrecuency(30);
 		dto.setRefill(1);
-		dto.setRefillValue(2);
+		dto.setRefillValue(5);
 		dto.setRefillInterval(1);
 		dto.setRefillMonthly(true);
+		dto.setIndication("Indicaciones [TEST]");
 		dto.setVademecum(new VademecumDto(null, codeVademecum, descVademecum));
 
 		con.setMensajePost(dto);

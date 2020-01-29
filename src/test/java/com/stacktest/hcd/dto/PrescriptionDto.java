@@ -24,6 +24,8 @@ public class PrescriptionDto {
 
 	private Integer duration;
 
+	private Boolean durationMonthly;
+
 	private Integer frecuency;
 
 	private Integer refill;
@@ -38,7 +40,7 @@ public class PrescriptionDto {
 
 	private VademecumDto vademecum;
 
-	private String indications;
+	private String indication;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = ConstantConfig.SYSTEM_TIMEZONE)
 	private Date date;
@@ -98,6 +100,14 @@ public class PrescriptionDto {
 
 	public void setDuration(Integer duration) {
 		this.duration = duration;
+	}
+
+	public Boolean getDurationMonthly() {
+		return durationMonthly;
+	}
+
+	public void setDurationMonthly(Boolean durationMonthly) {
+		this.durationMonthly = durationMonthly;
 	}
 
 	public Integer getFrecuency() {
@@ -160,12 +170,12 @@ public class PrescriptionDto {
 		return posology;
 	}
 
-	public String getIndications() {
-		return indications;
+	public String getIndication() {
+		return indication;
 	}
 
-	public void setIndications(String indications) {
-		this.indications = indications;
+	public void setIndication(String indication) {
+		this.indication = indication;
 	}
 
 	public void setPosology(LookupDto posology) {
