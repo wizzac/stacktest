@@ -15,7 +15,7 @@ public class PersonMedicineTreatmentTest {
 	private HCDConnection con = new HCDConnection("32811727M", "1234");// Domene
 	private int idHealthCenter = 23;// Domene
 	int idPatient = 9;//99575;
-	int idconsultation = 128061;
+	int idconsultation = 192034;
 	int idPrescription = 80410;
 	int idPersonHasMedTreat = 15;
 	
@@ -27,7 +27,7 @@ public class PersonMedicineTreatmentTest {
 		//con.agregarParametroGet("date_to", "2020-01-22");
 		
 		PagedResources<PersonMedicationTreatmentDto> page = con.ejecutarForPagedResources("GET",
-				"/secure/healthCenter/" + idHealthCenter + "/patient/" + idPatient + "/medicationtreatment",
+				"/secure/healthCenter/" + idHealthCenter + "/patient/" + idPatient + "/medicationtreatment/page",
 				PersonMedicationTreatmentDto.class);
 
 		assert page != null;
@@ -74,8 +74,8 @@ public class PersonMedicineTreatmentTest {
 
 		dto.setMedicationTreatmentType(new LookupValueDto());
 		dto.getMedicationTreatmentType().setCode("DRUG_INJECTION_INTRAVENOUS");
-		dto.setBrand("Una marca");
-		dto.setLot("Un lote");
+		//dto.setBrand("Una marca");
+		//dto.setLot("Un lote");
 
 		con.setMensajePost(dto);
 		PersonMedicationTreatmentDto[] dtos = con.ejecutar("POST",

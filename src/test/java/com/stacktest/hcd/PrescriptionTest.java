@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.springframework.hateoas.PagedResources;
 
 import com.stacktest.hcd.dto.LookupDto;
+import com.stacktest.hcd.dto.LookupValueDto;
 import com.stacktest.hcd.dto.PrescriptionDto;
 import com.stacktest.hcd.dto.PrescriptionSuspensionDto;
 import com.stacktest.hcd.dto.VademecumDto;
@@ -14,10 +15,10 @@ public class PrescriptionTest {
 	private HCDConnection con = new HCDConnection("32811727M", "1234");// Domene
 	private int idHealthCenter = 23;// Domene
 	private int idPatient = 9;
-	private int idPrescription = 79377;
-	private int idConsultation = 128093;
-	private String codeVademecum = "14013541000999116";
-	private String descVademecum = "IBUPROFENO 600 MG CAPSULA";
+	private int idPrescription = 79391;
+	private int idConsultation = 191774;
+	private String codeVademecum = "5405431000999112";
+	private String descVademecum = "AMOXICILINA 500 MG ACIDO CLAVULANICO 125 MG COMPRIMIDO";
 
 	@Test
 	public void createPrescription() {
@@ -30,10 +31,10 @@ public class PrescriptionTest {
 		dto.setDuration(3);
 		dto.setDurationMonthly(true);
 		dto.setFrecuency(30);
-		dto.setRefill(1);
-		dto.setRefillValue(5);
-		dto.setRefillInterval(1);
-		dto.setRefillMonthly(true);
+		dto.setRefill(0);
+		dto.setRefillValue(0);
+		dto.setRefillInterval(0);
+		dto.setRefillMonthly(false);
 		dto.setIndication("Indicaciones [TEST]");
 		dto.setVademecum(new VademecumDto(null, codeVademecum, descVademecum));
 
@@ -61,7 +62,7 @@ public class PrescriptionTest {
 	@Test
 		@SuppressWarnings("rawtypes")
 	public void getMedicinePrescriptionsPatient() {
-		con.agregarParametroGet("status", "SUS");
+		//con.agregarParametroGet("status", "SUS");
 		//con.agregarParametroGet("active_principle", "keto");
 		//con.agregarParametroGet("date_from", "2020-01-15");
 		//con.agregarParametroGet("date_to", "2020-01-15");
@@ -90,5 +91,12 @@ public class PrescriptionTest {
 		PrescriptionDto dto = con.ejecutar("PUT", "/secure/healthCenter/" + idHealthCenter + "/consultation/"
 				+ idConsultation + "/finalizeprescription/" + idPrescription, PrescriptionDto.class);
 		assert dto != null;
+	}
+
+	@Test
+	public void getPrescriptionTypes() {
+		LookupValueDto[] dtos = con.ejecutar("GET",
+				"/secure/healthCenter/" + idHealthCenter + "/medicineprescriptions/statusTypes", LookupValueDto[].class);
+		assert dtos != null;
 	}
 }

@@ -19,11 +19,12 @@ import com.stacktest.hcd.dto.SignatureDto;
 public class ConsultationTest {
 	HCDConnection con = new HCDConnection("32811727M", "1234");// Domene
 	private int idSchedule = 425254;
-	private int idConsultation = 128093;
+	private int idConsultation = 191994;
 	private int idHealthCenter = 23;// Domene
 	private int idService = 3011;// Domene
 	private int idProfessional = 557;// Domene
-	private int idPatient = 4;// 9 39797832 F PAULA VIRGINIA TORRES
+	private int idPatient = 9;// 9 39797832 F PAULA VIRGINIA TORRES
+	private String fileName = "4f3bf11f-2707-4a14-a4a8-134a4e8b7926";
 	private String consultationFilePath = "C:/StackTest";
 
 	public void setIdPatient(int idPatient) {
@@ -108,6 +109,31 @@ public class ConsultationTest {
 		assert resp != null;
 
 		byte[] data = Base64.decodeBase64(resp.get("document"));
+		try {
+			File fileDir = new File(consultationFilePath);
+			if (!fileDir.exists()) 
+				fileDir.mkdirs();
+			
+			File file = new File(consultationFilePath + "\\consultation_" + idConsultation + ".pdf");
+			if (!file.exists()) 
+				file.createNewFile();
+			
+			new FileOutputStream(file).write(data);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert false;
+		}
+	}
+
+	@Test
+	@SuppressWarnings("resource")
+	public void createAndDownloadConsultationFileFromFileName() {
+		// no funciona porque no devuelve un json la llamada!!!!
+		String resp = con.ejecutar("GET",
+				"/secure/mobile/files/download/" + fileName, String.class);
+		assert resp != null;
+
+		byte[] data = Base64.decodeBase64(resp);
 		try {
 			File fileDir = new File(consultationFilePath);
 			if (!fileDir.exists()) 

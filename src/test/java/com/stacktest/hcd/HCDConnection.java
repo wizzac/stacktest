@@ -41,6 +41,7 @@ import com.stacktest.hcd.dto.AutentificacionDto;
 public class HCDConnection {
 	private String urlHost = "http://localhost:8080/saludServer";
 	// private String urlHost = "http://64.215.200.200:8080/saludServer";
+	// private String urlHost = "http://192.168.1.101:8080/saludServer";
 	// private String urlHost = "http://192.168.10.92:8080/saludServer";
 	// private String urlHost = "http://192.168.0.104:8080/saludServer";
 
@@ -296,7 +297,7 @@ public class HCDConnection {
 			res.setRequestProperty("X-Authorization", "Bearer " + token);
 
 		// Seteo los tiempos de conexi�n y la abro
-		res.setConnectTimeout(30 * 1000);
+		res.setConnectTimeout(60 * 1000);
 		res.setReadTimeout(60 * 1000);
 		res.setDoOutput(true);
 		res.setRequestMethod(method);

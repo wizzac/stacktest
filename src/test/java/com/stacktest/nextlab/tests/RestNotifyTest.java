@@ -14,7 +14,7 @@ import com.stacktest.nextlab.dto.ResultDto;
 
 public class RestNotifyTest {
 	private String token = "nlsvctok";
-	private int prescriptionId = 62573;
+	private int prescriptionId = 105777;
 	private String analysisCode = "108";
 	private String analysisHibaCode = "11227171000999117";
 	private String analysisStatus = "SM";

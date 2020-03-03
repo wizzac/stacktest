@@ -2,7 +2,7 @@ package com.stacktest.hcd;
 
 import org.junit.Test;
 
-public class TerminologiaWSTest {
+public class WSTerminologiaTest {
 	private HCDConnection con = new HCDConnection("32811727M", "1234");// Domene
 	private int idHealthCenter = 23;// Domene
 	private Integer idConsultation = 128063;
@@ -56,6 +56,14 @@ public class TerminologiaWSTest {
 			con.agregarParametroGet("internmentId", idInternment);
 
 		Object dto = con.ejecutar("GET", "/secure/healthCenter/" + idHealthCenter + "/vademecum/commercialByGeneric", Object.class);
+		assert dto != null;
+	}
+	@Test
+	
+	public void getCodeSNMapping() {
+		con.agregarParametroGet("code", "630471000999111");
+
+		Object dto = con.ejecutar("GET", "/secure/healthCenter/" + idHealthCenter + "/codeSNMapping", Object.class);
 		assert dto != null;
 	}
 
