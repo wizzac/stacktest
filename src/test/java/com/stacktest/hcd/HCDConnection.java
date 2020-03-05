@@ -52,12 +52,16 @@ public class HCDConnection {
 	private String contentType = null;
 	private String mjePost;
 	private GsonBuilder gBuilder;
+	private String username; 
+	private String password;
 	private String token;
 
 	public HCDConnection(String username, String password) {
+		this.username = username;
+		this.password = password;
 		parametros = new HashMap<>();
 		gBuilder = new GsonBuilder().setDateFormat("dd-MM-yyyy HH:mm:ss");
-		autentificar(username, password);
+		autentificar(4);// 4 horas para mantener el token persistido
 	}
 
 	public void setHost(String url) {
@@ -167,7 +171,7 @@ public class HCDConnection {
 		return res;
 	}
 
-	private void autentificar(String username, String password) {
+	public void autentificar(int horas) {
 		try {
 			int nroDocumento = Integer.parseInt(username.substring(0, username.length() - 1));
 			boolean isMasculino = username.substring(username.length() - 1, username.length()).equalsIgnoreCase("M");
@@ -206,10 +210,14 @@ public class HCDConnection {
 
 			// Valido que exista yque la diferencia en tiempo es menor igual a 4hs
 			if (dto != null && dto.getHost().equals(urlHost)
-					&& (new Date().getTime() - dto.getFecha().getTime()) <= (4 * 60 * 60 * 1000))
+					&& (new Date().getTime() - dto.getFecha().getTime()) <= (horas * 60 * 60 * 1000))
 				token = dto.getBearer();
 			else {
-				actualizarToken(username, password);
+				UserPassDTO upDto = new UserPassDTO(username, password);
+				mjePost = gBuilder.create().toJson(upDto);
+				ResLoginDTO[] rlDto = ejecutar("GET", "/token/login/temporal", ResLoginDTO[].class);
+				token = rlDto[0].authToken.token;
+				mjePost = null;
 
 				if (dto != null)
 					lista.remove(dto);
@@ -235,14 +243,6 @@ public class HCDConnection {
 			ex.printStackTrace();
 			assert false;
 		}
-	}
-
-	private void actualizarToken(String username, String password) {
-		UserPassDTO upDto = new UserPassDTO(username, password);
-		mjePost = gBuilder.create().toJson(upDto);
-		ResLoginDTO[] dto = ejecutar("GET", "/token/login/temporal", ResLoginDTO[].class);
-		token = dto[0].authToken.token;
-		mjePost = null;
 	}
 
 	@SuppressWarnings({ "unchecked" })
