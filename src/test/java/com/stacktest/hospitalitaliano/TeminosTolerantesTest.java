@@ -16,7 +16,7 @@ public class TeminosTolerantesTest {
 	public void getDiagnosticoTest() {
 		Connection con = new Connection();
 		SolicitudDto request = new SolicitudDto();
-		request.setTexto("asma");
+		request.setTexto("Parálisis Flácida");
 		request.setSubset(new ArrayList<>());
 		request.getSubset().add(diagnosticoSubset);
 		

@@ -24,7 +24,7 @@ public class PrescriptionDto {
 
 	private Integer duration;
 
-	private Boolean durationMonthly;
+	private boolean durationMonthly;
 
 	private Integer frecuency;
 
@@ -37,10 +37,14 @@ public class PrescriptionDto {
 	private boolean refillMonthly;
 
 	private boolean generatedByRefill;
+	
+	private int recipesCount;
 
 	private VademecumDto vademecum;
 
 	private String indication;
+	
+	private String pharmacyIndication;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = ConstantConfig.SYSTEM_TIMEZONE)
 	private Date date;
@@ -48,6 +52,8 @@ public class PrescriptionDto {
 	private String professional;
 
 	private int applications;
+	
+	private Integer renewedPrescriptionId;
 
 	private String closureReason;
 
@@ -60,7 +66,11 @@ public class PrescriptionDto {
 
 	private String closureStatus;
 	
-	private boolean canFinalizeSuspend;
+	private boolean canClose;
+	
+	private boolean canRenew;
+	
+	private String snoMedCode;
 
 	public Integer getId() {
 		return id;
@@ -102,11 +112,11 @@ public class PrescriptionDto {
 		this.duration = duration;
 	}
 
-	public Boolean getDurationMonthly() {
+	public boolean getDurationMonthly() {
 		return durationMonthly;
 	}
 
-	public void setDurationMonthly(Boolean durationMonthly) {
+	public void setDurationMonthly(boolean durationMonthly) {
 		this.durationMonthly = durationMonthly;
 	}
 
@@ -158,6 +168,14 @@ public class PrescriptionDto {
 		this.generatedByRefill = generatedByRefill;
 	}
 
+	public int getRecipesCount() {
+		return recipesCount;
+	}
+
+	public void setRecipesCount(int recipesCount) {
+		this.recipesCount = recipesCount;
+	}
+
 	public VademecumDto getVademecum() {
 		return vademecum;
 	}
@@ -176,6 +194,14 @@ public class PrescriptionDto {
 
 	public void setIndication(String indication) {
 		this.indication = indication;
+	}
+
+	public String getPharmacyIndication() {
+		return pharmacyIndication;
+	}
+
+	public void setPharmacyIndication(String pharmacyIndication) {
+		this.pharmacyIndication = pharmacyIndication;
 	}
 
 	public void setPosology(LookupDto posology) {
@@ -212,6 +238,14 @@ public class PrescriptionDto {
 
 	public void setApplications(int applications) {
 		this.applications = applications;
+	}
+
+	public Integer getRenewedPrescriptionId() {
+		return renewedPrescriptionId;
+	}
+
+	public void setRenewedPrescriptionId(Integer renewedPrescriptionId) {
+		this.renewedPrescriptionId = renewedPrescriptionId;
 	}
 
 	public String getClosureReason() {
@@ -254,12 +288,28 @@ public class PrescriptionDto {
 		this.closureStatus = closureStatus;
 	}
 
-	public boolean isCanFinalizeSuspend() {
-		return canFinalizeSuspend;
+	public boolean isCanClose() {
+		return canClose;
 	}
 
-	public void setCanFinalizeSuspend(boolean canFinalizeSuspend) {
-		this.canFinalizeSuspend = canFinalizeSuspend;
+	public void setCanClose(boolean canClose) {
+		this.canClose = canClose;
+	}
+
+	public boolean isCanRenew() {
+		return canRenew;
+	}
+
+	public void setCanRenew(boolean canRenew) {
+		this.canRenew = canRenew;
+	}
+
+	public String getSnoMedCode() {
+		return snoMedCode;
+	}
+
+	public void setSnoMedCode(String snoMedCode) {
+		this.snoMedCode = snoMedCode;
 	}
 
 	@Override

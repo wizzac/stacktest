@@ -13,12 +13,13 @@ import com.stacktest.hcd.dto.VademecumDto;
 
 public class PrescriptionTest {
 	private HCDConnection con = new HCDConnection("32811727M", "1234");// Domene
-	private int idHealthCenter = 23;// Domene
-	private int idPatient = 9;
-	private int idPrescription = 79391;
-	private int idConsultation = 191774;
-	private String codeVademecum = "5405431000999112";
-	private String descVademecum = "AMOXICILINA 500 MG ACIDO CLAVULANICO 125 MG COMPRIMIDO";
+	private int idHealthCenter = 24;// Domene
+	private int idPatient = 55073;
+	private int idPrescription = 114389;
+	private int idRenewPrescription = 55777;
+	private int idConsultation = 213031;
+	private String codeVademecum = "10457461000999114";
+	private String descVademecum = "ACIDO BORICO 142 MG OXIDO ZINC 313 MG SUPOSITORIO";
 
 	@Test
 	public void createPrescription() {
@@ -52,6 +53,67 @@ public class PrescriptionTest {
 	}
 
 	@Test
+	public void createRenewPrescription() {
+		PrescriptionDto dto = new PrescriptionDto();
+		dto.setAmount("30");
+		dto.setPosology(new LookupDto());
+		dto.getPosology().setId(2);
+		dto.getPosology().setName("Miligramos");
+		dto.getPosology().setCode("mg");
+		dto.setDuration(3);
+		dto.setDurationMonthly(true);
+		dto.setFrecuency(3);
+		dto.setRefill(0);
+		dto.setRefillValue(0);
+		dto.setRefillInterval(0);
+		dto.setRefillMonthly(false);
+		dto.setIndication("Indicaciones [TEST]");
+		dto.setPharmacyIndication("Indicaciones al Farmaceútico [TEST]");
+		dto.setVademecum(new VademecumDto(null, codeVademecum, descVademecum));
+		dto.setRenewedPrescriptionId(idRenewPrescription);
+
+		con.setMensajePost(dto);
+		PrescriptionDto[] res = con.ejecutar("POST",
+				"/secure/healthCenter/" + idHealthCenter + "/consultation/" + idConsultation + "/prescription",
+				PrescriptionDto[].class);
+		assert res != null;
+		
+		for (PrescriptionDto pDto : res) 
+			if(dto.getVademecum().getCode().equals(codeVademecum))
+				idPrescription = pDto.getId();				
+		
+		System.out.print("Id de la Prescripcion: " + idPrescription);
+	}
+
+	@Test
+	public void updateRenewPrescription() {
+		PrescriptionDto dto = new PrescriptionDto();
+		dto.setId(idPrescription);
+		dto.setAmount("300000");
+		dto.setPosology(new LookupDto());
+		dto.getPosology().setId(2);
+		dto.getPosology().setName("Miligramos");
+		dto.getPosology().setCode("mg");
+		dto.setDuration(3);
+		dto.setDurationMonthly(true);
+		dto.setFrecuency(3);
+		dto.setRefill(0);
+		dto.setRefillValue(0);
+		dto.setRefillInterval(0);
+		dto.setRefillMonthly(false);
+		dto.setIndication("Indicaciones [TEST]");
+		dto.setPharmacyIndication("Indicaciones al Farmaceútico [TEST]");
+		dto.setVademecum(new VademecumDto(null, codeVademecum, descVademecum));
+		dto.setRenewedPrescriptionId(idRenewPrescription);
+
+		con.setMensajePost(dto);
+		PrescriptionDto[] res = con.ejecutar("PUT",
+				"/secure/healthCenter/" + idHealthCenter + "/consultation/" + idConsultation + "/prescription/" + dto.getId(),
+				PrescriptionDto[].class);
+		assert res != null;
+	}
+
+	@Test
 	public void getLastActiveMedicinePrescriptionsPatient() {
 		PrescriptionDto[] dto = con.ejecutar("GET",
 				"/secure/healthCenter/" + idHealthCenter + "/patient/" + idPatient + "/medicineprescriptions/active",
@@ -62,13 +124,14 @@ public class PrescriptionTest {
 	@Test
 		@SuppressWarnings("rawtypes")
 	public void getMedicinePrescriptionsPatient() {
+		con.agregarParametroGet("personId", idPatient);
 		//con.agregarParametroGet("status", "SUS");
 		//con.agregarParametroGet("active_principle", "keto");
 		//con.agregarParametroGet("date_from", "2020-01-15");
 		//con.agregarParametroGet("date_to", "2020-01-15");
 		
 		PagedResources page = con.ejecutar("GET",
-				"/secure/healthCenter/" + idHealthCenter + "/patient/" + idPatient + "/medicineprescriptions",
+				"/secure/healthCenter/" + idHealthCenter + "/consultation/" + idConsultation + "/prescriptions/search",
 				PagedResources.class);
 		assert page != null;
 	}
