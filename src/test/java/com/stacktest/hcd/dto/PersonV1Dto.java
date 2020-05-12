@@ -8,39 +8,50 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.stacktest.hcd.config.ConstantConfig;
 
 public class PersonV1Dto {
-
 	private Integer id;
-
 	private String firstName;
-
 	private String lastName;
-
 	private String fullName;
-
 	private String sex;
-
 	private Integer age;
-
+	private String ageLabel;
 	private LookupDto ageType;
-
 	private LookupDto bloodType;
-
 	private String photoBase64;
-
+	private DocumentTypeV1Dto documentType;
 	private String docNumber;
-
+	//private AddressV1Dto address;
 	private String insurancePlanNumber;
-
 	private String phone;
-
+	private PhoneDto phoneMobile;
 	private String email;
-
 	private String socialSecurityName;
-
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = ConstantConfig.SYSTEM_TIMEZONE)
 	private Date birthDay;
-
 	private boolean hasCipe;
+	private String internmentState;
+	private String internmentStateLabel;
+	private boolean isDocumented;
+	
+
+
+	private Integer motherId;
+
+	public String getInternmentStateLabel() {
+		return internmentStateLabel;
+	}
+
+	public void setInternmentStateLabel(String internmentStateLabel) {
+		this.internmentStateLabel = internmentStateLabel;
+	}
+
+	public String getInternmentState() {
+		return internmentState;
+	}
+
+	public void setInternmentState(String internmentState) {
+		this.internmentState = internmentState;
+	}
 
 	public Integer getId() {
 		return id;
@@ -98,6 +109,14 @@ public class PersonV1Dto {
 		this.photoBase64 = photoBase64;
 	}
 
+	public DocumentTypeV1Dto getDocumentType() {
+		return documentType;
+	}
+
+	public void setDocumentType(DocumentTypeV1Dto documentType) {
+		this.documentType = documentType;
+	}
+
 	public String getDocNumber() {
 		return docNumber;
 	}
@@ -105,6 +124,14 @@ public class PersonV1Dto {
 	public void setDocNumber(String docNumber) {
 		this.docNumber = docNumber;
 	}
+
+//	public AddressV1Dto getAddress() {
+//		return address;
+//	}
+//
+//	public void setAddress(AddressV1Dto address) {
+//		this.address = address;
+//	}
 
 	public String getInsurancePlanNumber() {
 		return insurancePlanNumber;
@@ -170,9 +197,42 @@ public class PersonV1Dto {
 		this.hasCipe = hasCipe;
 	}
 
+	public Integer getMotherId() {
+		return motherId;
+	}
+	public String getAgeLabel() {
+		return ageLabel;
+	}
+
+	public void setAgeLabel(String ageLabel) {
+		this.ageLabel = ageLabel;
+	}
+
+
+	public void setMotherId(Integer motherId) {
+		this.motherId = motherId;
+	}
+
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
 	}
 
+	public boolean isDocumented() {
+		return isDocumented;
+	}
+
+	public void setDocumented(boolean documented) {
+		isDocumented = documented;
+	}
+
+	public PhoneDto getPhoneMobile() {
+		return phoneMobile;
+	}
+
+	public void setPhoneMobile(PhoneDto phoneMobile) {
+		this.phoneMobile = phoneMobile;
+	}
+	
+	
 }

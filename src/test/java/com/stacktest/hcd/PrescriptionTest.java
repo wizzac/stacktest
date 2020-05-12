@@ -140,7 +140,7 @@ public class PrescriptionTest {
 	public void preSuspendPrescription() {
 		PrescriptionSuspensionDto reqDto = new PrescriptionSuspensionDto();
 		reqDto.setSuspensionDate(new Date());
-		reqDto.setSuspensionReason("Se suspendiÃ³ y punto viejo!!! TEST");
+		reqDto.setSuspensionReason("Se suspendió y punto viejo!!! TEST");
 
 		con.setMensajePost(reqDto);
 

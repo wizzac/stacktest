@@ -10,4 +10,11 @@ public class LookupTest {
 		Object[] dto = con.ejecutar("GET", "/secure/lookup/MEDICATION_TREATMENT_TYPE", Object[].class);
 		assert dto != null;
 	}
+
+	@Test
+	public void getNotificationTypes() {
+		HCDConnection con = new HCDConnection("1M", "1234");
+		Object[] dto = con.ejecutar("GET", "/secure/lookup/NOTIFICATION_TYPE", Object[].class);
+		assert dto != null;
+	}
 }

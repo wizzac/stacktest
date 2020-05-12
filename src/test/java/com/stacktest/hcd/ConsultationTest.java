@@ -17,11 +17,11 @@ import com.stacktest.hcd.dto.ServiceMinDto;
 import com.stacktest.hcd.dto.SignatureDto;
 
 public class ConsultationTest {
-	HCDConnection con = new HCDConnection("32811727M", "1234");// Domene
+	HCDConnection con = new HCDConnection("26806104F", "1234");
 	private int idSchedule = 596049;
-	private int idConsultation = 213081;
-	private int idHealthCenter = 24;// Domene
-	private int idService = 3125;// Domene
+	private int idConsultation = 238511;
+	private int idHealthCenter = 15;//24;// Domene
+	private int idService = 3166;// Domene
 	private int idPersonProfessional = 557;// Domene
 	private int idPatient = 55073;// 9 39797832 F PAULA VIRGINIA TORRES
 	private String fileName = "4f3bf11f-2707-4a14-a4a8-134a4e8b7926";

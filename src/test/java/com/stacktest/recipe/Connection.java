@@ -1,4 +1,4 @@
-package com.stacktest.hcd;
+package com.stacktest.recipe;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -38,9 +38,9 @@ import com.google.gson.JsonSyntaxException;
 import com.microsoft.sqlserver.jdbc.StringUtils;
 import com.stacktest.hcd.dto.AutentificacionDto;
 
-public class HCDConnection {
-	// private String urlHost = "http://localhost:8080/saludServer";
-	private String urlHost = "http://64.215.200.200:8080/saludServer";
+public class Connection {
+	private String urlHost = "http://localhost:8081";
+	// private String urlHost = "http://64.215.200.200:8080/saludServer";
 	// private String urlHost = "http://192.168.1.101:8080/saludServer";
 	// private String urlHost = "http://192.168.10.92:8080/saludServer";
 	// private String urlHost = "http://192.168.0.104:8080/saludServer";
@@ -56,7 +56,7 @@ public class HCDConnection {
 	private String password;
 	private String token;
 
-	public HCDConnection(String username, String password) {
+	public Connection(String username, String password) {
 		this.username = username;
 		this.password = password;
 		parametros = new HashMap<>();
@@ -215,7 +215,7 @@ public class HCDConnection {
 			else {
 				UserPassDTO upDto = new UserPassDTO(username, password);
 				mjePost = gBuilder.create().toJson(upDto);
-				ResLoginDTO[] rlDto = ejecutar("GET", "/token/login/temporal", ResLoginDTO[].class);
+				ResLoginDTO[] rlDto = ejecutar("GET", "/token/login", ResLoginDTO[].class);
 				token = rlDto[0].authToken.token;
 				mjePost = null;
 
